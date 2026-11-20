@@ -185,4 +185,12 @@
     <string name="demo_simulate_error_subtitle">Hace fallar la próxima solicitud para mostrar manejo de errores y reintento</string>
     <string name="demo_reset_button">Restablecer Datos de Ejemplo</string>
     <string name="demo_reset_failed">Falló por error simulado. Toca nuevamente para reintentar.</string>
+
+    <!-- Groups Search & Filter -->
+    <string name="groups_search_placeholder">Buscar grupos o participantes…</string>
+    <string name="groups_filter_all">Todos</string>
+    <string name="groups_filter_pending">Pendientes</string>
+    <string name="groups_filter_settled">Saldados</string>
+    <string name="groups_search_empty_title">Sin grupos coincidentes</string>
+    <string name="groups_search_empty_subtitle">Prueba otro término de búsqueda o limpia el filtro de estado.</string>
 </resources>
