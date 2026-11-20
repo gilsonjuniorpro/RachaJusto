@@ -163,4 +163,14 @@
     <string name="error_expense_exact_mismatch">A soma dos valores exatos deve igualar o total.</string>
     <string name="error_expense_shares_empty">Defina pelo menos uma cota maior que 0x.</string>
     <string name="error_expense_items_invalid">Cada item precisa de nome, valor e ao menos um consumidor.</string>
+
+    <!-- PIX Payment Bottom Sheet -->
+    <string name="pix_sheet_title">Pagar via PIX</string>
+    <string name="pix_receiver_key_label">Chave PIX: %1$s</string>
+    <string name="pix_demo_key_notice">Usando chave PIX demo válida (recebedor sem chave cadastrada)</string>
+    <string name="pix_emv_standard_badge">EMV BR Code • Padrão Banco Central (CRC16-CCITT)</string>
+    <string name="pix_copy_paste_label">PIX Copia e Cola</string>
+    <string name="pix_copy_button">Copiar Código PIX</string>
+    <string name="pix_code_copied_snackbar">Código PIX copiado para a área de transferência!</string>
+    <string name="pix_confirm_payment_button">Confirmar Pagamento</string>
 </resources>

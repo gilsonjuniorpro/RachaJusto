@@ -163,4 +163,14 @@
     <string name="error_expense_exact_mismatch">Individual amounts must add up exactly to the total.</string>
     <string name="error_expense_shares_empty">Assign at least one weight greater than 0x.</string>
     <string name="error_expense_items_invalid">Every item needs a name, value, and at least one consumer.</string>
+
+    <!-- PIX Payment Bottom Sheet -->
+    <string name="pix_sheet_title">Pay via PIX</string>
+    <string name="pix_receiver_key_label">PIX Key: %1$s</string>
+    <string name="pix_demo_key_notice">Using valid demo PIX key (recipient has no key registered)</string>
+    <string name="pix_emv_standard_badge">EMV BR Code • Central Bank of Brazil (CRC16-CCITT)</string>
+    <string name="pix_copy_paste_label">PIX Copy &amp; Paste</string>
+    <string name="pix_copy_button">Copy PIX Code</string>
+    <string name="pix_code_copied_snackbar">PIX code copied to clipboard!</string>
+    <string name="pix_confirm_payment_button">Confirm Payment</string>
 </resources>
