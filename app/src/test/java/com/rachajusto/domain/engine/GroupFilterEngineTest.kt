@@ -15,8 +15,8 @@ class GroupFilterEngineTest {
         assertEquals(1, GroupFilterEngine.filter(groups, query = "jordao").size)
         // Search by participant name
         assertEquals(1, GroupFilterEngine.filter(groups, query = "matheus").size)
-        // Both seed groups have pending transfers
+        // Two seed groups have pending transfers and one is fully settled
         assertEquals(2, GroupFilterEngine.filter(groups, statusFilter = GroupStatusFilter.PENDING).size)
-        assertEquals(0, GroupFilterEngine.filter(groups, statusFilter = GroupStatusFilter.SETTLED).size)
+        assertEquals(1, GroupFilterEngine.filter(groups, statusFilter = GroupStatusFilter.SETTLED).size)
     }
 }

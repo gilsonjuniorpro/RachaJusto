@@ -44,7 +44,7 @@ class MockGroupRepositoryTest {
         val (repo, _) = createRepository(file)
 
         val groups = repo.listGroups()
-        assertEquals(2, groups.size)
+        assertEquals(3, groups.size)
         assertTrue(file.exists())
 
         for (group in groups) {
@@ -145,7 +145,7 @@ class MockGroupRepositoryTest {
 
         // Next call succeeds automatically
         val groups = repo.listGroups()
-        assertEquals(2, groups.size)
+        assertEquals(3, groups.size)
     }
 
     @Test
@@ -163,7 +163,7 @@ class MockGroupRepositoryTest {
         assertEquals("🏢", updated.emoji)
 
         repo.deleteGroup("grp_republica_402")
-        assertEquals(1, repo.listGroups().size)
+        assertEquals(2, repo.listGroups().size)
     }
 
     @Test

@@ -17,7 +17,8 @@ object SeedDataFactory {
     fun createSeedGroups(referenceDate: LocalDate = LocalDate.now()): List<Group> {
         return listOf(
             createCamposDoJordaoGroup(referenceDate),
-            createRepublicaGroup(referenceDate)
+            createRepublicaGroup(referenceDate),
+            createBirthdayBbqGroup(referenceDate)
         )
     }
 
@@ -253,6 +254,93 @@ object SeedDataFactory {
             expenses = expenses,
             settlements = emptyList(),
             createdAtIso = isoAt(today.minusDays(7), 8)
+        )
+    }
+
+    private fun createBirthdayBbqGroup(today: LocalDate): Group {
+        val groupId = "grp_churrasco_niver"
+        val bruno = Participant("p_bruno", "Bruno", 0xFFEA580C, "bruno.silva@pixdemo.br", "CURITIBA")
+        val camila = Participant("p_camila", "Camila", 0xFFDB2777, "camila.dias@pixdemo.br", "CURITIBA")
+        val diego = Participant("p_diego", "Diego", 0xFF0891B2, "41998877665", "CURITIBA")
+        val fernanda = Participant("p_fernanda", "Fernanda", 0xFF65A30D, "fernanda.luz@pixdemo.br", "CURITIBA")
+
+        val participants = listOf(bruno, camila, diego, fernanda)
+        val allIds = participants.map { it.id }
+
+        val meatExpense = Expense(
+            id = "exp_bbq_1",
+            groupId = groupId,
+            title = "Carnes e Carvão",
+            category = ExpenseCategory.MARKET,
+            date = today.minusDays(10),
+            paidById = bruno.id,
+            totalAmountCents = 40000L,
+            splitMode = SplitMode.EQUAL,
+            splits = SplitCalculator.calculateEqualSplits(40000L, allIds),
+            createdAtIso = isoAt(today.minusDays(10), 11)
+        )
+        val drinksExpense = Expense(
+            id = "exp_bbq_2",
+            groupId = groupId,
+            title = "Bebidas e Sobremesa",
+            category = ExpenseCategory.DRINKS,
+            date = today.minusDays(10),
+            paidById = camila.id,
+            totalAmountCents = 20000L,
+            splitMode = SplitMode.EXACT,
+            splits = SplitCalculator.calculateExactSplits(
+                totalCents = 20000L,
+                amountsByParticipant = mapOf(
+                    bruno.id to 5000L,
+                    camila.id to 5000L,
+                    diego.id to 6000L,
+                    fernanda.id to 4000L
+                )
+            ),
+            createdAtIso = isoAt(today.minusDays(10), 12)
+        )
+
+        // Balances before settlements: Bruno=+250, Camila=+50, Diego=-160, Fernanda=-140
+        // Fully settled in 3 payments so this group demonstrates 100% settled state!
+        val settlements = listOf(
+            SettlementPayment(
+                id = "stl_bbq_1",
+                groupId = groupId,
+                fromParticipantId = diego.id,
+                toParticipantId = bruno.id,
+                amountCents = 16000L,
+                paidAtIso = isoAt(today.minusDays(9), 18),
+                note = "PIX"
+            ),
+            SettlementPayment(
+                id = "stl_bbq_2",
+                groupId = groupId,
+                fromParticipantId = fernanda.id,
+                toParticipantId = bruno.id,
+                amountCents = 9000L,
+                paidAtIso = isoAt(today.minusDays(9), 19),
+                note = "PIX"
+            ),
+            SettlementPayment(
+                id = "stl_bbq_3",
+                groupId = groupId,
+                fromParticipantId = fernanda.id,
+                toParticipantId = camila.id,
+                amountCents = 5000L,
+                paidAtIso = isoAt(today.minusDays(9), 19),
+                note = "PIX"
+            )
+        )
+
+        return Group(
+            id = groupId,
+            name = "Churrasco de Aniversário",
+            description = "Confraternização de domingo já 100% acertada no PIX",
+            emoji = "🍖",
+            participants = participants,
+            expenses = listOf(meatExpense, drinksExpense),
+            settlements = settlements,
+            createdAtIso = isoAt(today.minusDays(11), 9)
         )
     }
 
