@@ -70,6 +70,7 @@ import com.rachajusto.core.designsystem.theme.LocalSemanticColors
 import com.rachajusto.core.i18n.LocalAppLanguage
 import com.rachajusto.core.util.CurrencyFormatter
 import com.rachajusto.domain.engine.ExpenseSortOption
+import com.rachajusto.domain.engine.GroupAnalytics
 import com.rachajusto.domain.engine.GroupValidationRules
 import com.rachajusto.domain.model.Expense
 import com.rachajusto.domain.model.ExpenseCategory
@@ -452,7 +453,8 @@ private fun ExpenseCard(
 @Composable
 fun BalancesTabContent(
     group: Group,
-    summary: SettlementSummary
+    summary: SettlementSummary,
+    analytics: GroupAnalytics? = null
 ) {
     val participantsById = remember(group.participants) { group.participants.associateBy { it.id } }
     val sortedBalances = remember(summary.balances) {
@@ -464,6 +466,69 @@ fun BalancesTabContent(
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 32.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        if (analytics != null && analytics.categoryBreakdown.isNotEmpty()) {
+            item(key = "category_breakdown_card") {
+                Card(
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.analytics_category_breakdown_title),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        analytics.categoryBreakdown.forEach { cat ->
+                            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = cat.category.icon(),
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.primary,
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                        Text(
+                                            text = stringResource(cat.category.labelRes()),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    }
+                                    Text(
+                                        text = "${CurrencyFormatter.formatBrl(cat.totalCents)} (${cat.percentage.roundToInt()}%)",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                LinearProgressIndicator(
+                                    progress = { (cat.percentage / 100f).coerceIn(0f, 1f) },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(6.dp)
+                                        .clip(RoundedCornerShape(999.dp)),
+                                    color = MaterialTheme.colorScheme.primary,
+                                    trackColor = MaterialTheme.colorScheme.surfaceContainer
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
         items(sortedBalances, key = { it.participantId }) { balance ->
             val participant = participantsById[balance.participantId] ?: return@items
             ParticipantBalanceCard(

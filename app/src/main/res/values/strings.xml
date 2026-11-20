@@ -206,4 +206,5 @@
     <string name="sort_highest">Highest</string>
     <string name="sort_lowest">Lowest</string>
     <string name="sort_title_az">A–Z</string>
+    <string name="analytics_category_breakdown_title">Spending by Category</string>
 </resources>
