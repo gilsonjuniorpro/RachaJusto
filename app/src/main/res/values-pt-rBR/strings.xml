@@ -173,4 +173,16 @@
     <string name="pix_copy_button">Copiar Código PIX</string>
     <string name="pix_code_copied_snackbar">Código PIX copiado para a área de transferência!</string>
     <string name="pix_confirm_payment_button">Confirmar Pagamento</string>
+
+    <!-- Demo Mode Sheet -->
+    <string name="demo_mode_title">Modo Demo e Preferências</string>
+    <string name="demo_mode_subtitle">Ajuste a simulação local e o idioma do aplicativo</string>
+    <string name="demo_latency_label">Latência Simulada</string>
+    <string name="demo_latency_normal">Normal (300ms)</string>
+    <string name="demo_latency_slow">Lenta (1500ms)</string>
+    <string name="demo_latency_instant">Instantânea (0ms)</string>
+    <string name="demo_simulate_error_title">Simular Erro de Rede</string>
+    <string name="demo_simulate_error_subtitle">Faz a próxima requisição falhar para demonstrar tratamento de erro e nova tentativa</string>
+    <string name="demo_reset_button">Resetar Dados de Exemplo</string>
+    <string name="demo_reset_failed">Falha simulada ao resetar. Toque novamente para tentar.</string>
 </resources>

@@ -2,6 +2,12 @@ package com.rachajusto.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -12,6 +18,9 @@ import androidx.navigation.navArgument
 import com.rachajusto.core.di.AppContainer
 import com.rachajusto.feature.addexpense.AddExpenseScreen
 import com.rachajusto.feature.addexpense.AddExpenseViewModel
+import com.rachajusto.feature.demo.DemoModeBottomSheet
+import com.rachajusto.feature.demo.DemoModeViewModel
+import com.rachajusto.feature.demo.TopBarUtilityActions
 import com.rachajusto.feature.groupdetail.GroupDetailScreen
 import com.rachajusto.feature.groupdetail.GroupDetailViewModel
 import com.rachajusto.feature.groups.GroupsListScreen
@@ -23,6 +32,18 @@ fun RachaJustoNavHost(
     appContainer: AppContainer,
     navController: NavHostController = rememberNavController()
 ) {
+    val currentLanguage by appContainer.languageManager.currentLanguage.collectAsStateWithLifecycle()
+    val isErrorArmed by appContainer.networkSimulator.simulateNextError.collectAsStateWithLifecycle()
+    var showDemoSheet by remember { mutableStateOf(false) }
+    var dataResetEpoch by remember { mutableIntStateOf(0) }
+
+    val demoModeViewModel: DemoModeViewModel = viewModel(
+        factory = DemoModeViewModel.factory(
+            repository = appContainer.groupRepository,
+            networkSimulator = appContainer.networkSimulator
+        )
+    )
+
     NavHost(
         navController = navController,
         startDestination = RachaJustoRoutes.GROUPS
@@ -32,9 +53,11 @@ fun RachaJustoNavHost(
                 factory = GroupsViewModel.factory(appContainer.groupRepository)
             )
             val shouldRefresh = backStackEntry.savedStateHandle.get<Boolean>("refresh_groups") == true
-            LaunchedEffect(shouldRefresh) {
+            LaunchedEffect(shouldRefresh, dataResetEpoch) {
                 if (shouldRefresh) {
                     backStackEntry.savedStateHandle["refresh_groups"] = false
+                    groupsViewModel.loadGroups()
+                } else if (dataResetEpoch > 0) {
                     groupsViewModel.loadGroups()
                 }
             }
@@ -42,9 +65,18 @@ fun RachaJustoNavHost(
                 viewModel = groupsViewModel,
                 onGroupClick = { groupId ->
                     navController.navigate(RachaJustoRoutes.groupDetail(groupId))
+                },
+                topBarActions = {
+                    TopBarUtilityActions(
+                        currentLanguage = currentLanguage,
+                        isErrorSimulationArmed = isErrorArmed,
+                        onSelectLanguage = appContainer.languageManager::setLanguage,
+                        onOpenDemoSheet = { showDemoSheet = true }
+                    )
                 }
             )
         }
+
         composable(
             route = RachaJustoRoutes.GROUP_DETAIL,
             arguments = listOf(navArgument("groupId") { type = NavType.StringType })
@@ -55,11 +87,13 @@ fun RachaJustoNavHost(
                 factory = GroupDetailViewModel.factory(groupId, appContainer.groupRepository)
             )
             val shouldRefresh = backStackEntry.savedStateHandle.get<Boolean>("refresh_detail") == true
-            LaunchedEffect(shouldRefresh) {
+            LaunchedEffect(shouldRefresh, dataResetEpoch) {
                 if (shouldRefresh) {
                     backStackEntry.savedStateHandle["refresh_detail"] = false
                     detailViewModel.loadGroup()
                     navController.previousBackStackEntry?.savedStateHandle?.set("refresh_groups", true)
+                } else if (dataResetEpoch > 0) {
+                    detailViewModel.loadGroup()
                 }
             }
 
@@ -72,6 +106,14 @@ fun RachaJustoNavHost(
                 onDataChanged = {
                     navController.previousBackStackEntry?.savedStateHandle?.set("refresh_groups", true)
                 },
+                topBarActions = {
+                    TopBarUtilityActions(
+                        currentLanguage = currentLanguage,
+                        isErrorSimulationArmed = isErrorArmed,
+                        onSelectLanguage = appContainer.languageManager::setLanguage,
+                        onOpenDemoSheet = { showDemoSheet = true }
+                    )
+                },
                 pixSheetContent = { transfer, from, to, onDismiss, onConfirmPaid ->
                     PixPaymentBottomSheet(
                         transfer = transfer,
@@ -83,6 +125,7 @@ fun RachaJustoNavHost(
                 }
             )
         }
+
         composable(
             route = RachaJustoRoutes.ADD_EXPENSE,
             arguments = listOf(navArgument("groupId") { type = NavType.StringType })
@@ -106,5 +149,18 @@ fun RachaJustoNavHost(
                 }
             )
         }
+    }
+
+    if (showDemoSheet) {
+        DemoModeBottomSheet(
+            viewModel = demoModeViewModel,
+            currentLanguage = currentLanguage,
+            onSelectLanguage = appContainer.languageManager::setLanguage,
+            onDataReset = {
+                dataResetEpoch++
+                navController.popBackStack(RachaJustoRoutes.GROUPS, inclusive = false)
+            },
+            onDismiss = { showDemoSheet = false }
+        )
     }
 }

@@ -173,4 +173,16 @@
     <string name="pix_copy_button">Copy PIX Code</string>
     <string name="pix_code_copied_snackbar">PIX code copied to clipboard!</string>
     <string name="pix_confirm_payment_button">Confirm Payment</string>
+
+    <!-- Demo Mode Sheet -->
+    <string name="demo_mode_title">Demo Mode &amp; Preferences</string>
+    <string name="demo_mode_subtitle">Configure local simulation controls and app language</string>
+    <string name="demo_latency_label">Simulated Network Latency</string>
+    <string name="demo_latency_normal">Normal (300ms)</string>
+    <string name="demo_latency_slow">Slow (1500ms)</string>
+    <string name="demo_latency_instant">Instant (0ms)</string>
+    <string name="demo_simulate_error_title">Simulate Network Error</string>
+    <string name="demo_simulate_error_subtitle">Makes the next request fail to showcase error handling and retry</string>
+    <string name="demo_reset_button">Reset Sample Data</string>
+    <string name="demo_reset_failed">Reset failed due to simulated error. Tap again to retry.</string>
 </resources>
