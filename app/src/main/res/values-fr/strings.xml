@@ -207,4 +207,6 @@
     <string name="sort_lowest">Plus basses</string>
     <string name="sort_title_az">A–Z</string>
     <string name="analytics_category_breakdown_title">Dépenses par Catégorie</string>
+    <string name="participants_export_csv_button">Exporter CSV</string>
+    <string name="csv_exported_snackbar">CSV exporté et copié dans le presse-papiers !</string>
 </resources>

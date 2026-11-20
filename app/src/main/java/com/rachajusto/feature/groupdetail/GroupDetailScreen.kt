@@ -67,6 +67,7 @@ import com.rachajusto.R
 import com.rachajusto.core.designsystem.components.EmptyStateCard
 import com.rachajusto.core.designsystem.components.ShimmerBox
 import com.rachajusto.core.designsystem.theme.AvatarColorPalette
+import com.rachajusto.domain.engine.GroupCsvExporter
 import com.rachajusto.domain.model.Participant
 import com.rachajusto.domain.model.SuggestedTransfer
 import kotlinx.coroutines.launch
@@ -133,6 +134,8 @@ fun GroupDetailScreen(
     )
     val shareCopiedMessage = stringResource(R.string.share_summary_copied)
     val shareChooserTitle = stringResource(R.string.participants_share_button)
+    val csvCopiedMessage = stringResource(R.string.csv_exported_snackbar)
+    val csvChooserTitle = stringResource(R.string.participants_export_csv_button)
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -310,6 +313,13 @@ fun GroupDetailScreen(
                                 copyAndShareSummary(context, summaryText, shareChooserTitle)
                                 coroutineScope.launch {
                                     snackbarHostState.showSnackbar(shareCopiedMessage)
+                                }
+                            },
+                            onExportCsv = {
+                                val csv = GroupCsvExporter.exportExpensesCsv(group)
+                                copyAndShareSummary(context, csv, csvChooserTitle)
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar(csvCopiedMessage)
                                 }
                             },
                             onAddParticipantClick = viewModel::openAddParticipantDialog,
