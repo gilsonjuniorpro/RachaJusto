@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RachaJusto</string>
+    <string name="app_tagline">División Inteligente de Gastos con Minimización de Transferencias y PIX</string>
+    <string name="groups_title">Mis Grupos</string>
+    <string name="group_detail_title">Detalle del Grupo</string>
+    <string name="add_expense_title">Nuevo Gasto</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_confirm">Confirmar</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_close">Cerrar</string>
+    <string name="language_title">Idioma</string>
+</resources>

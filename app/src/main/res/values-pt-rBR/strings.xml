@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RachaJusto</string>
+    <string name="app_tagline">Racha-Contas Inteligente com Minimização de Transferências e PIX</string>
+    <string name="groups_title">Meus Grupos</string>
+    <string name="group_detail_title">Detalhe do Grupo</string>
+    <string name="add_expense_title">Nova Despesa</string>
+    <string name="action_retry">Tentar novamente</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_save">Salvar</string>
+    <string name="action_confirm">Confirmar</string>
+    <string name="action_delete">Excluir</string>
+    <string name="action_close">Fechar</string>
+    <string name="language_title">Idioma</string>
+</resources>

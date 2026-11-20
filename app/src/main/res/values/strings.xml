@@ -2,4 +2,14 @@
 <resources>
     <string name="app_name">RachaJusto</string>
     <string name="app_tagline">Smart Bill Splitting with Transfer Minimization &amp; PIX</string>
+    <string name="groups_title">My Groups</string>
+    <string name="group_detail_title">Group Details</string>
+    <string name="add_expense_title">New Expense</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_close">Close</string>
+    <string name="language_title">Language</string>
 </resources>
