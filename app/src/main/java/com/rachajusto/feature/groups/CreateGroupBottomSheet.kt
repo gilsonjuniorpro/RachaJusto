@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rachajusto.R
 import com.rachajusto.core.designsystem.theme.AvatarColorPalette
+import com.rachajusto.core.i18n.WithAppLanguage
 
 private val GroupEmojiOptions = listOf(
     "🏔️", "🏠", "🍻", "🏖️", "🍖", "✈️",
@@ -77,6 +78,7 @@ fun CreateGroupBottomSheet(
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surface
     ) {
+        WithAppLanguage {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -233,6 +235,7 @@ fun CreateGroupBottomSheet(
                     Text(stringResource(R.string.create_group_submit))
                 }
             }
+        }
         }
     }
 }

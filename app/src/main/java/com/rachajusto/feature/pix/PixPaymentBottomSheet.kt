@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.rachajusto.R
 import com.rachajusto.core.designsystem.components.ParticipantAvatar
+import com.rachajusto.core.i18n.WithAppLanguage
 import com.rachajusto.core.util.CurrencyFormatter
 import com.rachajusto.domain.engine.PixBrCodeGenerator
 import com.rachajusto.domain.engine.PixTxIdGenerator
@@ -103,6 +104,7 @@ fun PixPaymentBottomSheet(
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surface
     ) {
+        WithAppLanguage {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -291,6 +293,7 @@ fun PixPaymentBottomSheet(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(stringResource(R.string.pix_confirm_payment_button))
             }
+        }
         }
     }
 }

@@ -56,6 +56,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rachajusto.R
 import com.rachajusto.core.designsystem.theme.AppThemeMode
 import com.rachajusto.core.i18n.AppLanguage
+import com.rachajusto.core.i18n.WithAppLanguage
 import com.rachajusto.data.network.SimulatedLatencyMode
 
 @Composable
@@ -152,6 +153,7 @@ fun DemoModeBottomSheet(
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surface
     ) {
+        WithAppLanguage {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -321,6 +323,7 @@ fun DemoModeBottomSheet(
                     Text(stringResource(R.string.demo_reset_button))
                 }
             }
+        }
         }
     }
 }
