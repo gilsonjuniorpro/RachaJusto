@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RachaJusto</string>
+    <string name="app_tagline">Smart Bill Splitting with Transfer Minimization &amp; PIX</string>
+</resources>
