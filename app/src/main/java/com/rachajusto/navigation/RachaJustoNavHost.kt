@@ -22,6 +22,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rachajusto.R
 import com.rachajusto.core.di.AppContainer
+import com.rachajusto.feature.groupdetail.GroupDetailScreen
+import com.rachajusto.feature.groupdetail.GroupDetailViewModel
 import com.rachajusto.feature.groups.GroupsListScreen
 import com.rachajusto.feature.groups.GroupsViewModel
 
@@ -55,22 +57,31 @@ fun RachaJustoNavHost(
         composable(
             route = RachaJustoRoutes.GROUP_DETAIL,
             arguments = listOf(navArgument("groupId") { type = NavType.StringType })
-        ) {
-            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.group_detail_title),
-                        style = MaterialTheme.typography.headlineMedium
-                    )
+        ) { backStackEntry ->
+            val groupId = backStackEntry.arguments?.getString("groupId") ?: return@composable
+            val detailViewModel: GroupDetailViewModel = viewModel(
+                key = "group_detail_$groupId",
+                factory = GroupDetailViewModel.factory(groupId, appContainer.groupRepository)
+            )
+            val shouldRefresh = backStackEntry.savedStateHandle.get<Boolean>("refresh_detail") == true
+            LaunchedEffect(shouldRefresh) {
+                if (shouldRefresh) {
+                    backStackEntry.savedStateHandle["refresh_detail"] = false
+                    detailViewModel.loadGroup()
+                    navController.previousBackStackEntry?.savedStateHandle?.set("refresh_groups", true)
                 }
             }
+
+            GroupDetailScreen(
+                viewModel = detailViewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onAddExpenseClick = {
+                    navController.navigate(RachaJustoRoutes.addExpense(groupId))
+                },
+                onDataChanged = {
+                    navController.previousBackStackEntry?.savedStateHandle?.set("refresh_groups", true)
+                }
+            )
         }
         composable(
             route = RachaJustoRoutes.ADD_EXPENSE,
