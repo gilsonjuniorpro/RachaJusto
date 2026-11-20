@@ -195,4 +195,10 @@
     <string name="groups_search_empty_subtitle">Try a different search term or reset the status filter.</string>
     <string name="groups_overview_total_tracked">Total tracked</string>
     <string name="groups_overview_pending_label">Pending transfers</string>
+    <string name="group_menu_more">More options</string>
+    <string name="group_action_edit">Edit group</string>
+    <string name="group_action_delete">Delete group</string>
+    <string name="feedback_group_updated">Group details updated</string>
+    <string name="dialog_delete_group_title">Delete group?</string>
+    <string name="dialog_delete_group_message">Permanently delete "%1$s" and all of its expenses and settlements?</string>
 </resources>

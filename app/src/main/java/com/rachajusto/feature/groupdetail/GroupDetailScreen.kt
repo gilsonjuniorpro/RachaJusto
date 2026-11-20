@@ -23,9 +23,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.DeleteOutline
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -88,6 +93,7 @@ fun GroupDetailScreen(
     val context = LocalContext.current
 
     val feedbackMessages = mapOf(
+        GroupDetailFeedback.GROUP_UPDATED to stringResource(R.string.feedback_group_updated),
         GroupDetailFeedback.EXPENSE_DELETED to stringResource(R.string.feedback_expense_deleted),
         GroupDetailFeedback.SETTLEMENT_RECORDED to stringResource(R.string.feedback_settlement_recorded),
         GroupDetailFeedback.SETTLEMENT_UNDONE to stringResource(R.string.feedback_settlement_undone),
@@ -97,6 +103,13 @@ fun GroupDetailScreen(
         GroupDetailFeedback.PARTICIPANT_CANNOT_REMOVE_LINKED to stringResource(R.string.feedback_participant_cannot_remove),
         GroupDetailFeedback.ACTION_FAILED to stringResource(R.string.error_generic_action)
     )
+
+    LaunchedEffect(uiState.groupDeleted) {
+        if (uiState.groupDeleted) {
+            onDataChanged()
+            onNavigateBack()
+        }
+    }
 
     LaunchedEffect(uiState.feedback) {
         val feedback = uiState.feedback ?: return@LaunchedEffect
@@ -142,7 +155,54 @@ fun GroupDetailScreen(
                         )
                     }
                 },
-                actions = { topBarActions() }
+                actions = {
+                    topBarActions()
+                    if (uiState.group != null) {
+                        var menuExpanded by remember { mutableStateOf(false) }
+                        Box {
+                            IconButton(onClick = { menuExpanded = true }) {
+                                Icon(
+                                    imageVector = Icons.Rounded.MoreVert,
+                                    contentDescription = stringResource(R.string.group_menu_more)
+                                )
+                            }
+                            DropdownMenu(
+                                expanded = menuExpanded,
+                                onDismissRequest = { menuExpanded = false }
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.group_action_edit)) },
+                                    leadingIcon = {
+                                        Icon(imageVector = Icons.Rounded.Edit, contentDescription = null)
+                                    },
+                                    onClick = {
+                                        menuExpanded = false
+                                        viewModel.openEditGroupDialog()
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            text = stringResource(R.string.group_action_delete),
+                                            color = MaterialTheme.colorScheme.error
+                                        )
+                                    },
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Rounded.DeleteOutline,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.error
+                                        )
+                                    },
+                                    onClick = {
+                                        menuExpanded = false
+                                        viewModel.openDeleteGroupDialog()
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -312,6 +372,78 @@ fun GroupDetailScreen(
             confirmButton = {
                 Button(onClick = viewModel::dismissBlockedRemovalDialog) {
                     Text(stringResource(R.string.action_close))
+                }
+            }
+        )
+    }
+
+    // Edit Group Info Dialog
+    val currentGroup = uiState.group
+    if (uiState.isEditGroupDialogOpen && currentGroup != null) {
+        var name by remember(currentGroup.id) { mutableStateOf(currentGroup.name) }
+        var description by remember(currentGroup.id) { mutableStateOf(currentGroup.description.orEmpty()) }
+        var emoji by remember(currentGroup.id) { mutableStateOf(currentGroup.emoji) }
+
+        AlertDialog(
+            onDismissRequest = viewModel::dismissEditGroupDialog,
+            title = { Text(stringResource(R.string.group_action_edit)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    OutlinedTextField(
+                        value = emoji,
+                        onValueChange = { if (it.length <= 4) emoji = it },
+                        label = { Text(stringResource(R.string.create_group_emoji_label)) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text(stringResource(R.string.create_group_name_label)) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = { description = it },
+                        label = { Text(stringResource(R.string.create_group_description_label)) },
+                        maxLines = 2,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { viewModel.updateGroupInfo(name, description, emoji.ifBlank { currentGroup.emoji }) },
+                    enabled = name.isNotBlank()
+                ) {
+                    Text(stringResource(R.string.action_save))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = viewModel::dismissEditGroupDialog) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            }
+        )
+    }
+
+    // Delete Group Confirmation Dialog
+    if (uiState.isDeleteGroupDialogOpen && currentGroup != null) {
+        AlertDialog(
+            onDismissRequest = viewModel::dismissDeleteGroupDialog,
+            title = { Text(stringResource(R.string.dialog_delete_group_title)) },
+            text = {
+                Text(stringResource(R.string.dialog_delete_group_message, currentGroup.name))
+            },
+            confirmButton = {
+                Button(onClick = viewModel::confirmDeleteGroup) {
+                    Text(stringResource(R.string.action_delete))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = viewModel::dismissDeleteGroupDialog) {
+                    Text(stringResource(R.string.action_cancel))
                 }
             }
         )

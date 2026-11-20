@@ -195,4 +195,10 @@
     <string name="groups_search_empty_subtitle">Prueba otro término de búsqueda o limpia el filtro de estado.</string>
     <string name="groups_overview_total_tracked">Total acumulado</string>
     <string name="groups_overview_pending_label">Transf. pendientes</string>
+    <string name="group_menu_more">Más opciones</string>
+    <string name="group_action_edit">Editar grupo</string>
+    <string name="group_action_delete">Eliminar grupo</string>
+    <string name="feedback_group_updated">Datos del grupo actualizados</string>
+    <string name="dialog_delete_group_title">¿Eliminar grupo?</string>
+    <string name="dialog_delete_group_message">¿Eliminar permanentemente "%1$s" junto con todos sus gastos y pagos?</string>
 </resources>
