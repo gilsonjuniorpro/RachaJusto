@@ -57,7 +57,7 @@ class GroupsViewModelTest {
         val state = vm.uiState.value
         assertFalse(state.isLoading)
         assertNull(state.errorType)
-        assertEquals(2, state.groups.size)
+        assertEquals(3, state.groups.size)
         assertTrue(state.groups.all { it.totalSpentCents > 0L })
     }
 
@@ -85,7 +85,7 @@ class GroupsViewModelTest {
         val state = vm.uiState.value
         assertFalse(state.isCreateSheetVisible)
         assertTrue(state.groupCreatedEvent)
-        assertEquals(3, state.groups.size)
+        assertEquals(4, state.groups.size)
         assertEquals("Churrasco da Firma", state.groups.first().name)
     }
 
