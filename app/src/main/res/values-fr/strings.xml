@@ -209,4 +209,6 @@
     <string name="analytics_category_breakdown_title">Dépenses par Catégorie</string>
     <string name="participants_export_csv_button">Exporter CSV</string>
     <string name="csv_exported_snackbar">CSV exporté et copié dans le presse-papiers !</string>
+    <string name="expense_duplicate_action">Dupliquer</string>
+    <string name="feedback_expense_duplicated">Dépense dupliquée pour aujourd\'hui</string>
 </resources>

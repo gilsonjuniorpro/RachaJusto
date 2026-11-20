@@ -209,4 +209,6 @@
     <string name="analytics_category_breakdown_title">Gastos por Categoria</string>
     <string name="participants_export_csv_button">Exportar CSV</string>
     <string name="csv_exported_snackbar">CSV exportado e copiado para a área de transferência!</string>
+    <string name="expense_duplicate_action">Duplicar</string>
+    <string name="feedback_expense_duplicated">Despesa duplicada para hoje</string>
 </resources>

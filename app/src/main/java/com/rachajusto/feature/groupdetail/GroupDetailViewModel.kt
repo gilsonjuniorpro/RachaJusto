@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rachajusto.domain.engine.CashFlowMinimizer
+import com.rachajusto.domain.engine.ExpenseDuplicator
 import com.rachajusto.domain.engine.ExpenseSortOption
 import com.rachajusto.domain.engine.ExpenseSorter
 import com.rachajusto.domain.engine.GroupAnalytics
@@ -34,6 +35,7 @@ enum class GroupDetailTab {
 
 enum class GroupDetailFeedback {
     GROUP_UPDATED,
+    EXPENSE_DUPLICATED,
     EXPENSE_DELETED,
     SETTLEMENT_RECORDED,
     SETTLEMENT_UNDONE,
@@ -169,6 +171,13 @@ class GroupDetailViewModel(
         _uiState.update { it.copy(pendingDeleteExpense = null) }
         runMutation(GroupDetailFeedback.EXPENSE_DELETED) {
             repository.deleteExpense(groupId, expense.id)
+        }
+    }
+
+    fun duplicateExpense(expense: Expense) {
+        val copy = ExpenseDuplicator.duplicateForDate(expense)
+        runMutation(GroupDetailFeedback.EXPENSE_DUPLICATED) {
+            repository.addExpense(groupId, copy)
         }
     }
 

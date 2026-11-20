@@ -27,6 +27,7 @@ import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material.icons.rounded.DeleteOutline
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.ExpandLess
@@ -90,6 +91,7 @@ fun ExpensesTabContent(
     onSearchQueryChange: (String) -> Unit,
     onSelectSortOption: (ExpenseSortOption) -> Unit,
     onClearFilters: () -> Unit,
+    onDuplicateExpense: (Expense) -> Unit = {},
     onRequestDeleteExpense: (Expense) -> Unit,
     onAddExpenseClick: () -> Unit
 ) {
@@ -269,6 +271,7 @@ fun ExpensesTabContent(
                     payer = participantsById[expense.paidById],
                     participantsById = participantsById,
                     dateFormatted = CurrencyFormatter.formatShortDate(expense.date, locale),
+                    onDuplicateClick = { onDuplicateExpense(expense) },
                     onDeleteClick = { onRequestDeleteExpense(expense) }
                 )
             }
@@ -282,6 +285,7 @@ private fun ExpenseCard(
     payer: Participant?,
     participantsById: Map<String, Participant>,
     dateFormatted: String,
+    onDuplicateClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
     var expanded by remember(expense.id) { mutableStateOf(false) }
@@ -431,6 +435,15 @@ private fun ExpenseCard(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
+                        TextButton(onClick = onDuplicateClick) {
+                            Icon(
+                                imageVector = Icons.Rounded.ContentCopy,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(text = stringResource(R.string.expense_duplicate_action))
+                        }
                         TextButton(onClick = onDeleteClick) {
                             Icon(
                                 imageVector = Icons.Rounded.DeleteOutline,
