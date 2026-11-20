@@ -165,4 +165,23 @@ class MockGroupRepositoryTest {
         repo.deleteGroup("grp_republica_402")
         assertEquals(1, repo.listGroups().size)
     }
+
+    @Test
+    fun updateExpense_replacesTargetExpenseInPlace() = runTest {
+        val file = File(tempFolder.root, "rachajusto_v1.json")
+        val (repo, _) = createRepository(file)
+
+        val group = repo.getGroup("grp_republica_402")!!
+        val original = group.expenses.first { it.id == "exp_rep_3" }
+        val edited = original.copy(
+            title = "Internet Fibra 1Gbps",
+            totalAmountCents = 15000L,
+            splits = SplitCalculator.calculateEqualSplits(15000L, group.participants.map { it.id })
+        )
+
+        val updatedGroup = repo.updateExpense(group.id, edited)
+        val saved = updatedGroup.expenses.first { it.id == "exp_rep_3" }
+        assertEquals("Internet Fibra 1Gbps", saved.title)
+        assertEquals(15000L, saved.totalAmountCents)
+    }
 }

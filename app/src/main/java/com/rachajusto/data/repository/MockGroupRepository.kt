@@ -100,6 +100,22 @@ class MockGroupRepository(
             }
         }
 
+    override suspend fun updateExpense(groupId: String, expense: Expense): Group =
+        networkSimulator.execute {
+            mutex.withLock {
+                updateGroupLocked(groupId) { current ->
+                    require(current.expenses.any { it.id == expense.id }) {
+                        "Expense not found: ${expense.id}"
+                    }
+                    current.copy(
+                        expenses = current.expenses.map {
+                            if (it.id == expense.id) expense else it
+                        }
+                    )
+                }
+            }
+        }
+
     override suspend fun deleteExpense(groupId: String, expenseId: String): Group =
         networkSimulator.execute {
             mutex.withLock {
