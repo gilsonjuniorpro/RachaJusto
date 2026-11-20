@@ -201,4 +201,9 @@
     <string name="feedback_group_updated">Group details updated</string>
     <string name="dialog_delete_group_title">Delete group?</string>
     <string name="dialog_delete_group_message">Permanently delete "%1$s" and all of its expenses and settlements?</string>
+    <string name="expenses_search_placeholder">Search expenses or items…</string>
+    <string name="sort_newest">Newest</string>
+    <string name="sort_highest">Highest</string>
+    <string name="sort_lowest">Lowest</string>
+    <string name="sort_title_az">A–Z</string>
 </resources>

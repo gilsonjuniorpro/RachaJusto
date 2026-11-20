@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.rounded.ReceiptLong
 import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.DeleteOutline
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.ExpandLess
@@ -33,6 +34,7 @@ import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Key
 import androidx.compose.material.icons.rounded.PersonAdd
 import androidx.compose.material.icons.rounded.QrCode2
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -45,6 +47,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -66,6 +69,7 @@ import com.rachajusto.core.designsystem.components.ParticipantAvatar
 import com.rachajusto.core.designsystem.theme.LocalSemanticColors
 import com.rachajusto.core.i18n.LocalAppLanguage
 import com.rachajusto.core.util.CurrencyFormatter
+import com.rachajusto.domain.engine.ExpenseSortOption
 import com.rachajusto.domain.engine.GroupValidationRules
 import com.rachajusto.domain.model.Expense
 import com.rachajusto.domain.model.ExpenseCategory
@@ -81,6 +85,8 @@ fun ExpensesTabContent(
     uiState: GroupDetailUiState,
     onTogglePayerFilter: (String?) -> Unit,
     onToggleCategoryFilter: (ExpenseCategory?) -> Unit,
+    onSearchQueryChange: (String) -> Unit,
+    onSelectSortOption: (ExpenseSortOption) -> Unit,
     onClearFilters: () -> Unit,
     onRequestDeleteExpense: (Expense) -> Unit,
     onAddExpenseClick: () -> Unit
@@ -143,7 +149,48 @@ fun ExpensesTabContent(
 
         // Filters section
         item(key = "filters") {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = uiState.expenseSearchQuery,
+                    onValueChange = onSearchQueryChange,
+                    placeholder = { Text(stringResource(R.string.expenses_search_placeholder)) },
+                    leadingIcon = { Icon(imageVector = Icons.Rounded.Search, contentDescription = null) },
+                    trailingIcon = {
+                        if (uiState.expenseSearchQuery.isNotEmpty()) {
+                            IconButton(onClick = { onSearchQueryChange("") }) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Close,
+                                    contentDescription = stringResource(R.string.action_close)
+                                )
+                            }
+                        }
+                    },
+                    singleLine = true,
+                    shape = RoundedCornerShape(14.dp),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    listOf(
+                        ExpenseSortOption.DATE_DESC to R.string.sort_newest,
+                        ExpenseSortOption.AMOUNT_DESC to R.string.sort_highest,
+                        ExpenseSortOption.AMOUNT_ASC to R.string.sort_lowest,
+                        ExpenseSortOption.TITLE_ASC to R.string.sort_title_az
+                    ).forEach { (option, labelRes) ->
+                        FilterChip(
+                            selected = uiState.sortOption == option,
+                            onClick = { onSelectSortOption(option) },
+                            label = { Text(stringResource(labelRes)) }
+                        )
+                    }
+                }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

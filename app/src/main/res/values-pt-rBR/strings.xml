@@ -201,4 +201,9 @@
     <string name="feedback_group_updated">Dados do grupo atualizados</string>
     <string name="dialog_delete_group_title">Excluir grupo?</string>
     <string name="dialog_delete_group_message">Deseja excluir permanentemente "%1$s" junto com todas as despesas e pagamentos?</string>
+    <string name="expenses_search_placeholder">Buscar despesas ou itens…</string>
+    <string name="sort_newest">Recentes</string>
+    <string name="sort_highest">Maior valor</string>
+    <string name="sort_lowest">Menor valor</string>
+    <string name="sort_title_az">A–Z</string>
 </resources>

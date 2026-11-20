@@ -277,6 +277,8 @@ fun GroupDetailScreen(
                             uiState = uiState,
                             onTogglePayerFilter = viewModel::togglePayerFilter,
                             onToggleCategoryFilter = viewModel::toggleCategoryFilter,
+                            onSearchQueryChange = viewModel::updateExpenseSearchQuery,
+                            onSelectSortOption = viewModel::selectSortOption,
                             onClearFilters = viewModel::clearFilters,
                             onRequestDeleteExpense = viewModel::requestDeleteExpense,
                             onAddExpenseClick = onAddExpenseClick
