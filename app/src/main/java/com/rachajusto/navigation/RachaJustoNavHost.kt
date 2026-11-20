@@ -114,11 +114,12 @@ fun RachaJustoNavHost(
                         onOpenDemoSheet = { showDemoSheet = true }
                     )
                 },
-                pixSheetContent = { transfer, from, to, onDismiss, onConfirmPaid ->
+                pixSheetContent = { transfer, from, to, groupName, onDismiss, onConfirmPaid ->
                     PixPaymentBottomSheet(
                         transfer = transfer,
                         fromParticipant = from,
                         toParticipant = to,
+                        groupName = groupName,
                         onDismiss = onDismiss,
                         onConfirmPayment = onConfirmPaid
                     )

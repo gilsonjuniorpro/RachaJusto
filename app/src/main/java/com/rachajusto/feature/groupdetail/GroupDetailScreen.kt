@@ -84,9 +84,10 @@ fun GroupDetailScreen(
         transfer: SuggestedTransfer,
         from: Participant,
         to: Participant,
+        groupName: String,
         onDismiss: () -> Unit,
-        onConfirmPaid: () -> Unit
-    ) -> Unit = { _, _, _, _, _ -> }
+        onConfirmPaid: (note: String?) -> Unit
+    ) -> Unit = { _, _, _, _, _, _ -> }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -475,8 +476,9 @@ fun GroupDetailScreen(
                 activeTransfer,
                 from,
                 to,
+                group.name,
                 viewModel::dismissPixSheet,
-                { viewModel.markTransferAsPaid(activeTransfer, note = "PIX") }
+                { note -> viewModel.markTransferAsPaid(activeTransfer, note = note ?: "PIX") }
             )
         }
     }

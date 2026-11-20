@@ -28,14 +28,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +53,7 @@ import com.rachajusto.R
 import com.rachajusto.core.designsystem.components.ParticipantAvatar
 import com.rachajusto.core.util.CurrencyFormatter
 import com.rachajusto.domain.engine.PixBrCodeGenerator
+import com.rachajusto.domain.engine.PixTxIdGenerator
 import com.rachajusto.domain.model.Participant
 import com.rachajusto.domain.model.SuggestedTransfer
 import kotlinx.coroutines.launch
@@ -59,24 +64,35 @@ fun PixPaymentBottomSheet(
     transfer: SuggestedTransfer,
     fromParticipant: Participant,
     toParticipant: Participant,
+    groupName: String = "",
     onDismiss: () -> Unit,
-    onConfirmPayment: () -> Unit
+    onConfirmPayment: (note: String?) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    var paymentNote by remember(transfer) { mutableStateOf("") }
 
     val usesDemoFallbackKey = toParticipant.pixKey.isNullOrBlank()
     val effectivePixKey = toParticipant.pixKey?.takeIf { it.isNotBlank() }
         ?: PixBrCodeGenerator.DEFAULT_DEMO_PIX_KEY
 
-    val brCodePayload = remember(toParticipant, transfer.amountCents) {
+    val txId = remember(groupName, fromParticipant.name, transfer.amountCents) {
+        if (groupName.isBlank()) {
+            "***"
+        } else {
+            PixTxIdGenerator.generate(groupName, fromParticipant.name, transfer.amountCents)
+        }
+    }
+
+    val brCodePayload = remember(toParticipant, transfer.amountCents, txId) {
         PixBrCodeGenerator.generatePayload(
             pixKey = toParticipant.pixKey,
             merchantName = toParticipant.name,
             merchantCity = toParticipant.pixCity,
-            amountCents = transfer.amountCents
+            amountCents = transfer.amountCents,
+            txId = txId
         )
     }
 
@@ -248,8 +264,20 @@ fun PixPaymentBottomSheet(
                 Text(stringResource(R.string.pix_copy_button))
             }
 
+            OutlinedTextField(
+                value = paymentNote,
+                onValueChange = { paymentNote = it },
+                label = { Text(stringResource(R.string.pix_note_optional_label)) },
+                placeholder = { Text(stringResource(R.string.pix_note_placeholder)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
             Button(
-                onClick = onConfirmPayment,
+                onClick = {
+                    val cleanNote = paymentNote.trim().ifEmpty { "PIX ($txId)" }
+                    onConfirmPayment(cleanNote)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
