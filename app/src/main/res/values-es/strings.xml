@@ -206,4 +206,5 @@
     <string name="sort_highest">Mayor monto</string>
     <string name="sort_lowest">Menor monto</string>
     <string name="sort_title_az">A–Z</string>
+    <string name="analytics_category_breakdown_title">Gastos por Categoría</string>
 </resources>

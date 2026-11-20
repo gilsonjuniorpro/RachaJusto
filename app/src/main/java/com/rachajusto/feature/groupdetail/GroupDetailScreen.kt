@@ -286,7 +286,8 @@ fun GroupDetailScreen(
 
                         GroupDetailTab.BALANCES -> BalancesTabContent(
                             group = group,
-                            summary = summary
+                            summary = summary,
+                            analytics = uiState.analytics
                         )
 
                         GroupDetailTab.SETTLEMENT -> SettlementTabContent(
