@@ -16,6 +16,7 @@ import com.rachajusto.feature.groupdetail.GroupDetailScreen
 import com.rachajusto.feature.groupdetail.GroupDetailViewModel
 import com.rachajusto.feature.groups.GroupsListScreen
 import com.rachajusto.feature.groups.GroupsViewModel
+import com.rachajusto.feature.pix.PixPaymentBottomSheet
 
 @Composable
 fun RachaJustoNavHost(
@@ -70,6 +71,15 @@ fun RachaJustoNavHost(
                 },
                 onDataChanged = {
                     navController.previousBackStackEntry?.savedStateHandle?.set("refresh_groups", true)
+                },
+                pixSheetContent = { transfer, from, to, onDismiss, onConfirmPaid ->
+                    PixPaymentBottomSheet(
+                        transfer = transfer,
+                        fromParticipant = from,
+                        toParticipant = to,
+                        onDismiss = onDismiss,
+                        onConfirmPayment = onConfirmPaid
+                    )
                 }
             )
         }
