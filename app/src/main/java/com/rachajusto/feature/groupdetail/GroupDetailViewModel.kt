@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rachajusto.domain.engine.CashFlowMinimizer
+import com.rachajusto.domain.engine.ExpenseSortOption
+import com.rachajusto.domain.engine.ExpenseSorter
+import com.rachajusto.domain.engine.GroupAnalytics
+import com.rachajusto.domain.engine.GroupAnalyticsEngine
 import com.rachajusto.domain.engine.GroupValidationRules
 import com.rachajusto.domain.model.Expense
 import com.rachajusto.domain.model.ExpenseCategory
@@ -45,9 +49,12 @@ data class GroupDetailUiState(
     val isMutating: Boolean = false,
     val group: Group? = null,
     val summary: SettlementSummary? = null,
+    val analytics: GroupAnalytics? = null,
     val selectedTab: GroupDetailTab = GroupDetailTab.EXPENSES,
     val selectedPayerFilterId: String? = null,
     val selectedCategoryFilter: ExpenseCategory? = null,
+    val expenseSearchQuery: String = "",
+    val sortOption: ExpenseSortOption = ExpenseSortOption.DATE_DESC,
     val loadError: Boolean = false,
     val feedback: GroupDetailFeedback? = null,
     val pendingDeleteExpense: Expense? = null,
@@ -62,15 +69,15 @@ data class GroupDetailUiState(
     val filteredExpenses: List<Expense>
         get() {
             val all = group?.expenses ?: return emptyList()
-            return all
-                .filter { expense ->
-                    (selectedPayerFilterId == null || expense.paidById == selectedPayerFilterId) &&
-                        (selectedCategoryFilter == null || expense.category == selectedCategoryFilter)
-                }
-                .sortedWith(
-                    compareByDescending<Expense> { it.date }
-                        .thenByDescending { it.createdAtIso }
-                )
+            val byFilters = all.filter { expense ->
+                (selectedPayerFilterId == null || expense.paidById == selectedPayerFilterId) &&
+                    (selectedCategoryFilter == null || expense.category == selectedCategoryFilter)
+            }
+            return ExpenseSorter.filterAndSort(
+                expenses = byFilters,
+                query = expenseSearchQuery,
+                sortOption = sortOption
+            )
         }
 
     val totalSpentCents: Long
@@ -130,9 +137,22 @@ class GroupDetailViewModel(
         }
     }
 
+    fun updateExpenseSearchQuery(query: String) {
+        _uiState.update { it.copy(expenseSearchQuery = query) }
+    }
+
+    fun selectSortOption(option: ExpenseSortOption) {
+        _uiState.update { it.copy(sortOption = option) }
+    }
+
     fun clearFilters() {
         _uiState.update {
-            it.copy(selectedPayerFilterId = null, selectedCategoryFilter = null)
+            it.copy(
+                selectedPayerFilterId = null,
+                selectedCategoryFilter = null,
+                expenseSearchQuery = "",
+                sortOption = ExpenseSortOption.DATE_DESC
+            )
         }
     }
 
@@ -320,12 +340,14 @@ class GroupDetailViewModel(
 
     private fun applyGroup(group: Group, feedback: GroupDetailFeedback? = null) {
         val summary = CashFlowMinimizer.calculateSummary(group)
+        val analytics = GroupAnalyticsEngine.analyze(group)
         _uiState.update {
             it.copy(
                 isLoading = false,
                 isMutating = false,
                 group = group,
                 summary = summary,
+                analytics = analytics,
                 loadError = false,
                 feedback = feedback ?: it.feedback
             )

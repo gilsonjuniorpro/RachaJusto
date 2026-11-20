@@ -146,4 +146,20 @@ class GroupDetailViewModelTest {
         advanceUntilIdle()
         assertTrue(vm.uiState.value.groupDeleted)
     }
+
+    @Test
+    fun expenseSortingSearchAndAnalytics_updatesFilteredListAndBreakdown() = runTest {
+        val vm = createViewModel()
+        advanceUntilIdle()
+
+        assertNotNull(vm.uiState.value.analytics)
+        assertTrue(vm.uiState.value.analytics!!.categoryBreakdown.isNotEmpty())
+
+        vm.selectSortOption(com.rachajusto.domain.engine.ExpenseSortOption.AMOUNT_ASC)
+        assertEquals("Pedágios", vm.uiState.value.filteredExpenses.first().title)
+
+        vm.updateExpenseSearchQuery("fondue")
+        assertEquals(1, vm.uiState.value.filteredExpenses.size)
+        assertEquals("Restaurante Fondue", vm.uiState.value.filteredExpenses.first().title)
+    }
 }
