@@ -211,4 +211,9 @@
     <string name="csv_exported_snackbar">CSV exporté et copié dans le presse-papiers !</string>
     <string name="expense_duplicate_action">Dupliquer</string>
     <string name="feedback_expense_duplicated">Dépense dupliquée pour aujourd\'hui</string>
+    <string name="pix_type_email">E-mail</string>
+    <string name="pix_type_phone">Téléphone</string>
+    <string name="pix_type_cpf">CPF</string>
+    <string name="pix_type_cnpj">CNPJ</string>
+    <string name="pix_type_evp">Aléatoire</string>
 </resources>

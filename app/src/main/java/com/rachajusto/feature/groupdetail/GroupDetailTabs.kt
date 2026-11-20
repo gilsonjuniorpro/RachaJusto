@@ -74,6 +74,8 @@ import com.rachajusto.core.util.CurrencyFormatter
 import com.rachajusto.domain.engine.ExpenseSortOption
 import com.rachajusto.domain.engine.GroupAnalytics
 import com.rachajusto.domain.engine.GroupValidationRules
+import com.rachajusto.domain.engine.PixKeyType
+import com.rachajusto.domain.engine.PixKeyValidator
 import com.rachajusto.domain.model.Expense
 import com.rachajusto.domain.model.ExpenseCategory
 import com.rachajusto.domain.model.Group
@@ -1145,11 +1147,42 @@ fun ParticipantsTabContent(
                     )
 
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = participant.name,
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        val pixInfo = remember(participant.pixKey) {
+                            PixKeyValidator.inspect(participant.pixKey)
+                        }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Text(
+                                text = participant.name,
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            if (pixInfo.isValid) {
+                                val badgeRes = when (pixInfo.type) {
+                                    PixKeyType.EMAIL -> R.string.pix_type_email
+                                    PixKeyType.PHONE -> R.string.pix_type_phone
+                                    PixKeyType.CPF -> R.string.pix_type_cpf
+                                    PixKeyType.CNPJ -> R.string.pix_type_cnpj
+                                    PixKeyType.RANDOM_EVP -> R.string.pix_type_evp
+                                    PixKeyType.UNKNOWN -> null
+                                }
+                                badgeRes?.let { resId ->
+                                    Surface(
+                                        shape = RoundedCornerShape(999.dp),
+                                        color = MaterialTheme.colorScheme.primaryContainer
+                                    ) {
+                                        Text(
+                                            text = stringResource(resId),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
