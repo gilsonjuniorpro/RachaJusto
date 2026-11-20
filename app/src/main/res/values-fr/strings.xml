@@ -195,4 +195,10 @@
     <string name="groups_search_empty_subtitle">Essayez un autre terme de recherche ou réinitialisez le filtre.</string>
     <string name="groups_overview_total_tracked">Total suivi</string>
     <string name="groups_overview_pending_label">Virements en attente</string>
+    <string name="group_menu_more">Plus d\'options</string>
+    <string name="group_action_edit">Modifier le groupe</string>
+    <string name="group_action_delete">Supprimer le groupe</string>
+    <string name="feedback_group_updated">Détails du groupe mis à jour</string>
+    <string name="dialog_delete_group_title">Supprimer le groupe ?</string>
+    <string name="dialog_delete_group_message">Supprimer définitivement « %1$s » ainsi que toutes ses dépenses et paiements ?</string>
 </resources>
