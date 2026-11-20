@@ -124,4 +124,43 @@
     <string name="feedback_participant_updated">PIX details updated</string>
     <string name="feedback_participant_removed">Participant removed</string>
     <string name="feedback_participant_cannot_remove">Participant has linked expenses or payments</string>
+
+    <!-- Add Expense Screen -->
+    <string name="add_expense_description_label">Description</string>
+    <string name="add_expense_description_placeholder">e.g. Friday Dinner, Supermarket</string>
+    <string name="add_expense_split_mode_label">Split mode</string>
+    <string name="add_expense_total_amount_label">Total amount</string>
+    <string name="add_expense_paid_by_label">Paid by</string>
+    <string name="add_expense_date_label">Date</string>
+    <string name="add_expense_category_label">Category</string>
+    <string name="add_expense_equal_header">Participants (%1$d selected)</string>
+    <string name="add_expense_select_all">Select all</string>
+    <string name="add_expense_exact_remaining">Remaining: %1$s</string>
+    <string name="add_expense_exact_exceeded">Exceeded by: %1$s</string>
+    <string name="add_expense_shares_hint">Adjust weights per participant (e.g. couple 2x, individual 1x, excluded 0x).</string>
+    <string name="add_expense_scan_demo_title">Smart Receipt Scanner</string>
+    <string name="add_expense_scan_demo_subtitle">Auto-fill realistic bar, barbecue, or restaurant receipt items.</string>
+    <string name="add_expense_scan_demo_button">Scan Receipt (Demo)</string>
+    <string name="add_expense_scanning_receipt">Reading receipt items…</string>
+    <string name="receipt_preset_bar">Bar Tab</string>
+    <string name="receipt_preset_bbq">BBQ &amp; Market</string>
+    <string name="receipt_preset_fondue">Fondue Restaurant</string>
+    <string name="add_expense_item_number">Item %1$d</string>
+    <string name="add_expense_item_name_label">Item name</string>
+    <string name="add_expense_item_name_placeholder">e.g. Picanha, Beer</string>
+    <string name="add_expense_amount_short">Amount</string>
+    <string name="add_expense_item_consumers_label">Who shared this item?</string>
+    <string name="add_expense_add_item_button">Add Item</string>
+    <string name="add_expense_service_fee_label">Service fee (%1$d%%)</string>
+    <string name="add_expense_discount_label">Discount (optional)</string>
+    <string name="add_expense_subtotal_label">Items subtotal</string>
+    <string name="add_expense_grand_total_label">Total</string>
+    <string name="add_expense_save_button">Save Expense</string>
+    <string name="error_saving_expense">Could not save expense. Please try again.</string>
+    <string name="error_expense_title_required">Enter a description for the expense.</string>
+    <string name="error_expense_amount_required">Enter an amount greater than R$ 0,00.</string>
+    <string name="error_expense_no_participants">Select at least one participant.</string>
+    <string name="error_expense_exact_mismatch">Individual amounts must add up exactly to the total.</string>
+    <string name="error_expense_shares_empty">Assign at least one weight greater than 0x.</string>
+    <string name="error_expense_items_invalid">Every item needs a name, value, and at least one consumer.</string>
 </resources>

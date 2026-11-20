@@ -124,4 +124,43 @@
     <string name="feedback_participant_updated">Clave PIX actualizada</string>
     <string name="feedback_participant_removed">Participante eliminado</string>
     <string name="feedback_participant_cannot_remove">El participante tiene gastos o pagos vinculados</string>
+
+    <!-- Add Expense Screen -->
+    <string name="add_expense_description_label">Descripción</string>
+    <string name="add_expense_description_placeholder">Ej.: Cena del Viernes, Supermercado</string>
+    <string name="add_expense_split_mode_label">Modo de división</string>
+    <string name="add_expense_total_amount_label">Monto total</string>
+    <string name="add_expense_paid_by_label">Pagado por</string>
+    <string name="add_expense_date_label">Fecha</string>
+    <string name="add_expense_category_label">Categoría</string>
+    <string name="add_expense_equal_header">Participantes (%1$d seleccionados)</string>
+    <string name="add_expense_select_all">Todos</string>
+    <string name="add_expense_exact_remaining">Faltan %1$s</string>
+    <string name="add_expense_exact_exceeded">Excedido por %1$s</string>
+    <string name="add_expense_shares_hint">Ajusta el peso de cada participante (ej.: pareja 2x, individual 1x, excluido 0x).</string>
+    <string name="add_expense_scan_demo_title">Escáner Inteligente de Comanda</string>
+    <string name="add_expense_scan_demo_subtitle">Completa automáticamente ítems realistas de bar, asado o restaurante.</string>
+    <string name="add_expense_scan_demo_button">Escanear Comanda (Demo)</string>
+    <string name="add_expense_scanning_receipt">Leyendo ítems de la comanda…</string>
+    <string name="receipt_preset_bar">Cuenta de Bar</string>
+    <string name="receipt_preset_bbq">Asado y Mercado</string>
+    <string name="receipt_preset_fondue">Restaurante Fondue</string>
+    <string name="add_expense_item_number">Ítem %1$d</string>
+    <string name="add_expense_item_name_label">Nombre del ítem</string>
+    <string name="add_expense_item_name_placeholder">Ej.: Carne, Cerveza</string>
+    <string name="add_expense_amount_short">Monto</string>
+    <string name="add_expense_item_consumers_label">¿Quién consumió este ítem?</string>
+    <string name="add_expense_add_item_button">Añadir Ítem</string>
+    <string name="add_expense_service_fee_label">Servicio / propina (%1$d%%)</string>
+    <string name="add_expense_discount_label">Descuento (opcional)</string>
+    <string name="add_expense_subtotal_label">Subtotal de ítems</string>
+    <string name="add_expense_grand_total_label">Total</string>
+    <string name="add_expense_save_button">Guardar Gasto</string>
+    <string name="error_saving_expense">No se pudo guardar el gasto. Inténtalo de nuevo.</string>
+    <string name="error_expense_title_required">Ingresa una descripción para el gasto.</string>
+    <string name="error_expense_amount_required">Ingresa un monto mayor a R$ 0,00.</string>
+    <string name="error_expense_no_participants">Selecciona al menos un participante.</string>
+    <string name="error_expense_exact_mismatch">La suma de montos exactos debe coincidir con el total.</string>
+    <string name="error_expense_shares_empty">Asigna al menos una cuota mayor que 0x.</string>
+    <string name="error_expense_items_invalid">Cada ítem necesita nombre, monto y al menos un consumidor.</string>
 </resources>

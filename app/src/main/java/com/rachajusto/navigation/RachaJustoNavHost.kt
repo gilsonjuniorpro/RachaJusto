@@ -1,18 +1,7 @@
 package com.rachajusto.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -20,8 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.rachajusto.R
 import com.rachajusto.core.di.AppContainer
+import com.rachajusto.feature.addexpense.AddExpenseScreen
+import com.rachajusto.feature.addexpense.AddExpenseViewModel
 import com.rachajusto.feature.groupdetail.GroupDetailScreen
 import com.rachajusto.feature.groupdetail.GroupDetailViewModel
 import com.rachajusto.feature.groups.GroupsListScreen
@@ -86,22 +76,25 @@ fun RachaJustoNavHost(
         composable(
             route = RachaJustoRoutes.ADD_EXPENSE,
             arguments = listOf(navArgument("groupId") { type = NavType.StringType })
-        ) {
-            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.add_expense_title),
-                        style = MaterialTheme.typography.headlineMedium
-                    )
+        ) { backStackEntry ->
+            val groupId = backStackEntry.arguments?.getString("groupId") ?: return@composable
+            val addExpenseViewModel: AddExpenseViewModel = viewModel(
+                key = "add_expense_$groupId",
+                factory = AddExpenseViewModel.factory(
+                    groupId = groupId,
+                    repository = appContainer.groupRepository,
+                    receiptScannerService = appContainer.receiptScannerService
+                )
+            )
+
+            AddExpenseScreen(
+                viewModel = addExpenseViewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onExpenseSaved = {
+                    navController.previousBackStackEntry?.savedStateHandle?.set("refresh_detail", true)
+                    navController.popBackStack()
                 }
-            }
+            )
         }
     }
 }
