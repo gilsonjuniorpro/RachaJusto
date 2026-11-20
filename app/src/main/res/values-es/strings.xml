@@ -207,4 +207,6 @@
     <string name="sort_lowest">Menor monto</string>
     <string name="sort_title_az">A–Z</string>
     <string name="analytics_category_breakdown_title">Gastos por Categoría</string>
+    <string name="participants_export_csv_button">Exportar CSV</string>
+    <string name="csv_exported_snackbar">¡CSV exportado y copiado al portapapeles!</string>
 </resources>
