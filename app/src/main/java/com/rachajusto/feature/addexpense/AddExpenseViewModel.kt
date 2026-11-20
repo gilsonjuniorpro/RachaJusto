@@ -193,6 +193,15 @@ class AddExpenseViewModel(
         _uiState.update { it.copy(totalAmountCents = cents.coerceAtLeast(0L), validationError = null) }
     }
 
+    fun addQuickAmountCents(deltaCents: Long) {
+        _uiState.update {
+            it.copy(
+                totalAmountCents = (it.totalAmountCents + deltaCents).coerceAtLeast(0L),
+                validationError = null
+            )
+        }
+    }
+
     fun selectPayer(participantId: String) {
         _uiState.update { it.copy(paidById = participantId) }
     }
@@ -240,6 +249,20 @@ class AddExpenseViewModel(
             val updated = state.exactAmountsByParticipant.toMutableMap()
             updated[participantId] = amountCents.coerceAtLeast(0L)
             state.copy(exactAmountsByParticipant = updated, validationError = null)
+        }
+    }
+
+    fun distributeExactEqually() {
+        _uiState.update { state ->
+            if (state.totalAmountCents <= 0L || state.participants.isEmpty()) return@update state
+            val equalSplits = SplitCalculator.calculateEqualSplits(
+                state.totalAmountCents,
+                state.participants.map { it.id }
+            )
+            state.copy(
+                exactAmountsByParticipant = equalSplits.associate { it.participantId to it.amountCents },
+                validationError = null
+            )
         }
     }
 

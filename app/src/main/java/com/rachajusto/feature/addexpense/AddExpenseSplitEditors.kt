@@ -129,7 +129,8 @@ fun ExactSplitEditor(
     participants: List<Participant>,
     amountsByParticipant: Map<String, Long>,
     remainingCents: Long,
-    onAmountChange: (String, Long) -> Unit
+    onAmountChange: (String, Long) -> Unit,
+    onDistributeEqually: () -> Unit = {}
 ) {
     val semanticColors = LocalSemanticColors.current
     val isBalanced = remainingCents == 0L
@@ -174,6 +175,9 @@ fun ExactSplitEditor(
                         style = MaterialTheme.typography.labelLarge,
                         color = if (isBalanced) semanticColors.positive else semanticColors.negative
                     )
+                    TextButton(onClick = onDistributeEqually) {
+                        Text(stringResource(R.string.add_expense_distribute_equally))
+                    }
                 }
             }
 

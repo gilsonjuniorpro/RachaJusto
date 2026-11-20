@@ -250,13 +250,36 @@ fun AddExpenseScreen(
 
                     // Total amount field (auto-computed in ITEMIZED mode)
                     if (uiState.splitMode != SplitMode.ITEMIZED) {
-                        MoneyInputField(
-                            amountCents = uiState.totalAmountCents,
-                            onAmountCentsChange = viewModel::updateTotalAmountCents,
-                            label = stringResource(R.string.add_expense_total_amount_label),
-                            isError = uiState.validationError == AddExpenseValidationError.AMOUNT_REQUIRED,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            MoneyInputField(
+                                amountCents = uiState.totalAmountCents,
+                                onAmountCentsChange = viewModel::updateTotalAmountCents,
+                                label = stringResource(R.string.add_expense_total_amount_label),
+                                isError = uiState.validationError == AddExpenseValidationError.AMOUNT_REQUIRED,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .horizontalScroll(rememberScrollState()),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                listOf(2000L to "+R$ 20", 5000L to "+R$ 50", 10000L to "+R$ 100").forEach { (cents, label) ->
+                                    FilterChip(
+                                        selected = false,
+                                        onClick = { viewModel.addQuickAmountCents(cents) },
+                                        label = { Text(label) }
+                                    )
+                                }
+                                if (uiState.totalAmountCents > 0L) {
+                                    FilterChip(
+                                        selected = false,
+                                        onClick = { viewModel.updateTotalAmountCents(0L) },
+                                        label = { Text(stringResource(R.string.action_clear)) }
+                                    )
+                                }
+                            }
+                        }
                     }
 
                     // Payer selector
@@ -371,7 +394,8 @@ fun AddExpenseScreen(
                             participants = uiState.participants,
                             amountsByParticipant = uiState.exactAmountsByParticipant,
                             remainingCents = uiState.exactRemainingCents,
-                            onAmountChange = viewModel::updateExactAmount
+                            onAmountChange = viewModel::updateExactAmount,
+                            onDistributeEqually = viewModel::distributeExactEqually
                         )
 
                         SplitMode.SHARES -> SharesSplitEditor(
