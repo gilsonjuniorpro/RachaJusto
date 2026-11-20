@@ -220,4 +220,8 @@
     <string name="add_expense_distribute_equally">Répartir égal</string>
     <string name="pix_note_optional_label">Note de paiement (facultatif)</string>
     <string name="pix_note_placeholder">Ex. : Payé via l\'application bancaire</string>
+    <string name="theme_mode_title">Apparence</string>
+    <string name="theme_mode_system">Système</string>
+    <string name="theme_mode_light">Clair</string>
+    <string name="theme_mode_dark">Sombre</string>
 </resources>

@@ -220,4 +220,8 @@
     <string name="add_expense_distribute_equally">Distribuir igual</string>
     <string name="pix_note_optional_label">Observação do pagamento (opcional)</string>
     <string name="pix_note_placeholder">Ex.: Comprovante enviado no grupo</string>
+    <string name="theme_mode_title">Aparência</string>
+    <string name="theme_mode_system">Sistema</string>
+    <string name="theme_mode_light">Claro</string>
+    <string name="theme_mode_dark">Escuro</string>
 </resources>

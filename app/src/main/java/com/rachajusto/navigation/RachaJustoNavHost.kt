@@ -33,6 +33,7 @@ fun RachaJustoNavHost(
     navController: NavHostController = rememberNavController()
 ) {
     val currentLanguage by appContainer.languageManager.currentLanguage.collectAsStateWithLifecycle()
+    val currentThemeMode by appContainer.themePreferenceManager.themeMode.collectAsStateWithLifecycle()
     val isErrorArmed by appContainer.networkSimulator.simulateNextError.collectAsStateWithLifecycle()
     var showDemoSheet by remember { mutableStateOf(false) }
     var dataResetEpoch by remember { mutableIntStateOf(0) }
@@ -156,7 +157,9 @@ fun RachaJustoNavHost(
         DemoModeBottomSheet(
             viewModel = demoModeViewModel,
             currentLanguage = currentLanguage,
+            currentThemeMode = currentThemeMode,
             onSelectLanguage = appContainer.languageManager::setLanguage,
+            onSelectThemeMode = appContainer.themePreferenceManager::setThemeMode,
             onDataReset = {
                 dataResetEpoch++
                 navController.popBackStack(RachaJustoRoutes.GROUPS, inclusive = false)

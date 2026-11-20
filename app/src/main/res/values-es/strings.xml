@@ -220,4 +220,8 @@
     <string name="add_expense_distribute_equally">Repartir igual</string>
     <string name="pix_note_optional_label">Nota del pago (opcional)</string>
     <string name="pix_note_placeholder">Ej.: Pagado desde el banco</string>
+    <string name="theme_mode_title">Apariencia</string>
+    <string name="theme_mode_system">Sistema</string>
+    <string name="theme_mode_light">Claro</string>
+    <string name="theme_mode_dark">Oscuro</string>
 </resources>
