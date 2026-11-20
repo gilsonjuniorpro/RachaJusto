@@ -9,6 +9,13 @@ interface GroupRepository {
     suspend fun listGroups(): List<Group>
     suspend fun getGroup(id: String): Group?
     suspend fun createGroup(group: Group): Group
+    suspend fun updateGroupInfo(
+        groupId: String,
+        name: String,
+        description: String?,
+        emoji: String
+    ): Group
+    suspend fun deleteGroup(groupId: String)
     suspend fun updateParticipants(groupId: String, participants: List<Participant>): Group
     suspend fun addExpense(groupId: String, expense: Expense): Group
     suspend fun deleteExpense(groupId: String, expenseId: String): Group

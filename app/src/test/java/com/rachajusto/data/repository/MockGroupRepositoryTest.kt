@@ -147,4 +147,22 @@ class MockGroupRepositoryTest {
         val groups = repo.listGroups()
         assertEquals(2, groups.size)
     }
+
+    @Test
+    fun updateGroupInfoAndDeleteGroup_persistsChanges() = runTest {
+        val file = File(tempFolder.root, "rachajusto_v1.json")
+        val (repo, _) = createRepository(file)
+
+        val updated = repo.updateGroupInfo(
+            groupId = "grp_republica_402",
+            name = "Apê 402 Atualizado",
+            description = "Nova descrição",
+            emoji = "🏢"
+        )
+        assertEquals("Apê 402 Atualizado", updated.name)
+        assertEquals("🏢", updated.emoji)
+
+        repo.deleteGroup("grp_republica_402")
+        assertEquals(1, repo.listGroups().size)
+    }
 }

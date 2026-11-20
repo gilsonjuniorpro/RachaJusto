@@ -54,6 +54,32 @@ class MockGroupRepository(
         }
     }
 
+    override suspend fun updateGroupInfo(
+        groupId: String,
+        name: String,
+        description: String?,
+        emoji: String
+    ): Group = networkSimulator.execute {
+        mutex.withLock {
+            updateGroupLocked(groupId) { current ->
+                current.copy(
+                    name = name.trim(),
+                    description = description?.trim()?.ifEmpty { null },
+                    emoji = emoji
+                )
+            }
+        }
+    }
+
+    override suspend fun deleteGroup(groupId: String) = networkSimulator.execute {
+        mutex.withLock {
+            val groups = ensureLoaded()
+            val removed = groups.removeAll { it.id == groupId }
+            require(removed) { "Group not found: $groupId" }
+            persist(groups)
+        }
+    }
+
     override suspend fun updateParticipants(
         groupId: String,
         participants: List<Participant>
