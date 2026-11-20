@@ -18,6 +18,7 @@ interface GroupRepository {
     suspend fun deleteGroup(groupId: String)
     suspend fun updateParticipants(groupId: String, participants: List<Participant>): Group
     suspend fun addExpense(groupId: String, expense: Expense): Group
+    suspend fun updateExpense(groupId: String, expense: Expense): Group
     suspend fun deleteExpense(groupId: String, expenseId: String): Group
     suspend fun recordSettlement(groupId: String, payment: SettlementPayment): Group
     suspend fun undoSettlement(groupId: String, settlementId: String): Group
