@@ -211,4 +211,9 @@
     <string name="csv_exported_snackbar">CSV exported and copied to clipboard!</string>
     <string name="expense_duplicate_action">Duplicate</string>
     <string name="feedback_expense_duplicated">Expense duplicated for today</string>
+    <string name="pix_type_email">Email</string>
+    <string name="pix_type_phone">Phone</string>
+    <string name="pix_type_cpf">CPF</string>
+    <string name="pix_type_cnpj">CNPJ</string>
+    <string name="pix_type_evp">Random</string>
 </resources>
