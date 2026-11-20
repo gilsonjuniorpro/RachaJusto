@@ -54,6 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rachajusto.R
+import com.rachajusto.core.designsystem.theme.AppThemeMode
 import com.rachajusto.core.i18n.AppLanguage
 import com.rachajusto.data.network.SimulatedLatencyMode
 
@@ -127,7 +128,9 @@ fun TopBarUtilityActions(
 fun DemoModeBottomSheet(
     viewModel: DemoModeViewModel,
     currentLanguage: AppLanguage,
+    currentThemeMode: AppThemeMode = AppThemeMode.SYSTEM,
     onSelectLanguage: (AppLanguage) -> Unit,
+    onSelectThemeMode: (AppThemeMode) -> Unit = {},
     onDataReset: () -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -197,6 +200,31 @@ fun DemoModeBottomSheet(
                             selected = currentLanguage == language,
                             onClick = { onSelectLanguage(language) },
                             label = { Text(language.nativeName) }
+                        )
+                    }
+                }
+            }
+
+            // Theme selector
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = stringResource(R.string.theme_mode_title),
+                    style = MaterialTheme.typography.titleSmall
+                )
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    AppThemeMode.entries.forEach { mode ->
+                        val labelRes = when (mode) {
+                            AppThemeMode.SYSTEM -> R.string.theme_mode_system
+                            AppThemeMode.LIGHT -> R.string.theme_mode_light
+                            AppThemeMode.DARK -> R.string.theme_mode_dark
+                        }
+                        FilterChip(
+                            selected = currentThemeMode == mode,
+                            onClick = { onSelectThemeMode(mode) },
+                            label = { Text(stringResource(labelRes)) }
                         )
                     }
                 }

@@ -220,4 +220,8 @@
     <string name="add_expense_distribute_equally">Split equally</string>
     <string name="pix_note_optional_label">Payment note (optional)</string>
     <string name="pix_note_placeholder">e.g. Paid via bank app</string>
+    <string name="theme_mode_title">Appearance</string>
+    <string name="theme_mode_system">System</string>
+    <string name="theme_mode_light">Light</string>
+    <string name="theme_mode_dark">Dark</string>
 </resources>

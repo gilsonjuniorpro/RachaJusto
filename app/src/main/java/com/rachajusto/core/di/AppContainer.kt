@@ -1,6 +1,7 @@
 package com.rachajusto.core.di
 
 import android.content.Context
+import com.rachajusto.core.designsystem.theme.ThemePreferenceManager
 import com.rachajusto.core.i18n.LanguageManager
 import com.rachajusto.data.local.FileJsonGroupStorage
 import com.rachajusto.data.network.MockNetworkSimulator
@@ -15,6 +16,10 @@ class AppContainer(context: Context) {
 
     val languageManager: LanguageManager by lazy {
         LanguageManager(appContext)
+    }
+
+    val themePreferenceManager: ThemePreferenceManager by lazy {
+        ThemePreferenceManager(appContext)
     }
 
     val networkSimulator: MockNetworkSimulator by lazy {
