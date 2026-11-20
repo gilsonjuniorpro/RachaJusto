@@ -95,6 +95,7 @@ fun GroupDetailScreen(
 
     val feedbackMessages = mapOf(
         GroupDetailFeedback.GROUP_UPDATED to stringResource(R.string.feedback_group_updated),
+        GroupDetailFeedback.EXPENSE_DUPLICATED to stringResource(R.string.feedback_expense_duplicated),
         GroupDetailFeedback.EXPENSE_DELETED to stringResource(R.string.feedback_expense_deleted),
         GroupDetailFeedback.SETTLEMENT_RECORDED to stringResource(R.string.feedback_settlement_recorded),
         GroupDetailFeedback.SETTLEMENT_UNDONE to stringResource(R.string.feedback_settlement_undone),
@@ -283,6 +284,7 @@ fun GroupDetailScreen(
                             onSearchQueryChange = viewModel::updateExpenseSearchQuery,
                             onSelectSortOption = viewModel::selectSortOption,
                             onClearFilters = viewModel::clearFilters,
+                            onDuplicateExpense = viewModel::duplicateExpense,
                             onRequestDeleteExpense = viewModel::requestDeleteExpense,
                             onAddExpenseClick = onAddExpenseClick
                         )

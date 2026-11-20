@@ -162,4 +162,17 @@ class GroupDetailViewModelTest {
         assertEquals(1, vm.uiState.value.filteredExpenses.size)
         assertEquals("Restaurante Fondue", vm.uiState.value.filteredExpenses.first().title)
     }
+
+    @Test
+    fun duplicateExpense_clonesExpenseAndUpdatesBalances() = runTest {
+        val vm = createViewModel("grp_republica_402")
+        advanceUntilIdle()
+
+        val initialCount = vm.uiState.value.group!!.expenses.size
+        vm.duplicateExpense(vm.uiState.value.group!!.expenses.first())
+        advanceUntilIdle()
+
+        assertEquals(initialCount + 1, vm.uiState.value.group!!.expenses.size)
+        assertEquals(GroupDetailFeedback.EXPENSE_DUPLICATED, vm.uiState.value.feedback)
+    }
 }
