@@ -124,4 +124,43 @@
     <string name="feedback_participant_updated">Clé PIX mise à jour</string>
     <string name="feedback_participant_removed">Participant retiré</string>
     <string name="feedback_participant_cannot_remove">Ce participant possède des dépenses ou paiements liés</string>
+
+    <!-- Add Expense Screen -->
+    <string name="add_expense_description_label">Description</string>
+    <string name="add_expense_description_placeholder">Ex. : Dîner du vendredi, Courses</string>
+    <string name="add_expense_split_mode_label">Mode de partage</string>
+    <string name="add_expense_total_amount_label">Montant total</string>
+    <string name="add_expense_paid_by_label">Payé par</string>
+    <string name="add_expense_date_label">Date</string>
+    <string name="add_expense_category_label">Catégorie</string>
+    <string name="add_expense_equal_header">Participants (%1$d sélectionnés)</string>
+    <string name="add_expense_select_all">Tous</string>
+    <string name="add_expense_exact_remaining">Reste %1$s</string>
+    <string name="add_expense_exact_exceeded">Dépassé de %1$s</string>
+    <string name="add_expense_shares_hint">Ajustez les parts par participant (ex. : couple 2x, individuel 1x, exclu 0x).</string>
+    <string name="add_expense_scan_demo_title">Scanner d\'Addition Intelligent</string>
+    <string name="add_expense_scan_demo_subtitle">Remplissez automatiquement des articles réalistes de bar, barbecue ou restaurant.</string>
+    <string name="add_expense_scan_demo_button">Scanner l\'Addition (Démo)</string>
+    <string name="add_expense_scanning_receipt">Lecture des articles en cours…</string>
+    <string name="receipt_preset_bar">Addition de Bar</string>
+    <string name="receipt_preset_bbq">Barbecue &amp; Courses</string>
+    <string name="receipt_preset_fondue">Restaurant Fondue</string>
+    <string name="add_expense_item_number">Article %1$d</string>
+    <string name="add_expense_item_name_label">Nom de l\'article</string>
+    <string name="add_expense_item_name_placeholder">Ex. : Viande, Bière</string>
+    <string name="add_expense_amount_short">Montant</string>
+    <string name="add_expense_item_consumers_label">Qui a partagé cet article ?</string>
+    <string name="add_expense_add_item_button">Ajouter un Article</string>
+    <string name="add_expense_service_fee_label">Service (%1$d%%)</string>
+    <string name="add_expense_discount_label">Remise (facultatif)</string>
+    <string name="add_expense_subtotal_label">Sous-total des articles</string>
+    <string name="add_expense_grand_total_label">Total</string>
+    <string name="add_expense_save_button">Enregistrer la Dépense</string>
+    <string name="error_saving_expense">Impossible d\'enregistrer la dépense. Veuillez réessayer.</string>
+    <string name="error_expense_title_required">Saisissez une description pour la dépense.</string>
+    <string name="error_expense_amount_required">Saisissez un montant supérieur à R$ 0,00.</string>
+    <string name="error_expense_no_participants">Sélectionnez au moins un participant.</string>
+    <string name="error_expense_exact_mismatch">La somme des montants exacts doit correspondre au total.</string>
+    <string name="error_expense_shares_empty">Attribuez au moins une part supérieure à 0x.</string>
+    <string name="error_expense_items_invalid">Chaque article doit avoir un nom, un montant et au moins un consommateur.</string>
 </resources>
