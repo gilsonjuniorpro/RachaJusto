@@ -216,4 +216,6 @@
     <string name="pix_type_cpf">CPF</string>
     <string name="pix_type_cnpj">CNPJ</string>
     <string name="pix_type_evp">Aleatoria</string>
+    <string name="action_clear">Limpiar</string>
+    <string name="add_expense_distribute_equally">Repartir igual</string>
 </resources>

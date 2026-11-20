@@ -125,4 +125,18 @@ class AddExpenseViewModelTest {
         assertEquals(SplitMode.SHARES, saved.splitMode)
         assertEquals(100000L, saved.splits.sumOf { it.amountCents })
     }
+
+    @Test
+    fun quickAmountAndDistributeExactEqually_balancesRemainingToZero() = runTest {
+        val (vm, _) = createEnv()
+        advanceUntilIdle()
+
+        vm.addQuickAmountCents(5000L)
+        vm.addQuickAmountCents(5000L)
+        assertEquals(10000L, vm.uiState.value.totalAmountCents)
+
+        vm.selectSplitMode(SplitMode.EXACT)
+        vm.distributeExactEqually()
+        assertEquals(0L, vm.uiState.value.exactRemainingCents)
+    }
 }
