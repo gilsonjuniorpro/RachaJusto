@@ -100,4 +100,23 @@ class GroupsViewModelTest {
 
         assertEquals(GroupsErrorType.LOAD_FAILED, vm.uiState.value.errorType)
     }
+
+    @Test
+    fun searchAndStatusFilter_updatesFilteredGroupsReactively() = runTest {
+        val (vm, _) = createViewModel()
+        advanceUntilIdle()
+
+        assertEquals(3, vm.uiState.value.filteredGroups.size)
+
+        vm.selectStatusFilter(com.rachajusto.domain.engine.GroupStatusFilter.SETTLED)
+        assertEquals(1, vm.uiState.value.filteredGroups.size)
+        assertEquals("Churrasco de Aniversário", vm.uiState.value.filteredGroups.first().name)
+
+        vm.selectStatusFilter(com.rachajusto.domain.engine.GroupStatusFilter.ALL)
+        vm.updateSearchQuery("campos")
+        assertEquals(1, vm.uiState.value.filteredGroups.size)
+
+        vm.clearSearchAndFilter()
+        assertEquals(3, vm.uiState.value.filteredGroups.size)
+    }
 }

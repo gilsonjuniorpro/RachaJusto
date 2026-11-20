@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rachajusto.core.designsystem.theme.AvatarColorPalette
 import com.rachajusto.domain.engine.CashFlowMinimizer
+import com.rachajusto.domain.engine.GroupFilterEngine
+import com.rachajusto.domain.engine.GroupStatusFilter
 import com.rachajusto.domain.model.Group
 import com.rachajusto.domain.model.Participant
 import com.rachajusto.domain.repository.GroupRepository
@@ -57,12 +59,21 @@ enum class GroupsErrorType {
 data class GroupsUiState(
     val isLoading: Boolean = true,
     val groups: List<GroupCardUiModel> = emptyList(),
+    val filteredGroups: List<GroupCardUiModel> = emptyList(),
+    val searchQuery: String = "",
+    val statusFilter: GroupStatusFilter = GroupStatusFilter.ALL,
     val errorType: GroupsErrorType? = null,
     val isCreateSheetVisible: Boolean = false,
     val isSavingGroup: Boolean = false,
     val createForm: CreateGroupFormState = CreateGroupFormState(),
     val groupCreatedEvent: Boolean = false
-)
+) {
+    val totalTrackedCents: Long
+        get() = groups.sumOf { it.totalSpentCents }
+
+    val totalPendingTransfers: Int
+        get() = groups.sumOf { it.pendingTransfersCount }
+}
 
 private fun defaultParticipantDrafts(): List<ParticipantDraft> = listOf(
     ParticipantDraft(avatarColorHex = AvatarColorPalette[0]),
@@ -76,6 +87,8 @@ class GroupsViewModel(
     private val _uiState = MutableStateFlow(GroupsUiState())
     val uiState: StateFlow<GroupsUiState> = _uiState.asStateFlow()
 
+    private var cachedDomainGroups: List<Group> = emptyList()
+
     init {
         loadGroups()
     }
@@ -85,11 +98,15 @@ class GroupsViewModel(
             _uiState.update { it.copy(isLoading = true, errorType = null) }
             runCatching { repository.listGroups() }
                 .onSuccess { groups ->
+                    cachedDomainGroups = groups
+                    val current = _uiState.value
                     val mapped = groups.map { it.toCardUiModel() }
+                    val filtered = applyFilters(groups, current.searchQuery, current.statusFilter)
                     _uiState.update {
                         it.copy(
                             isLoading = false,
                             groups = mapped,
+                            filteredGroups = filtered,
                             errorType = null
                         )
                     }
@@ -103,6 +120,42 @@ class GroupsViewModel(
                     }
                 }
         }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _uiState.update { state ->
+            state.copy(
+                searchQuery = query,
+                filteredGroups = applyFilters(cachedDomainGroups, query, state.statusFilter)
+            )
+        }
+    }
+
+    fun selectStatusFilter(filter: GroupStatusFilter) {
+        _uiState.update { state ->
+            state.copy(
+                statusFilter = filter,
+                filteredGroups = applyFilters(cachedDomainGroups, state.searchQuery, filter)
+            )
+        }
+    }
+
+    fun clearSearchAndFilter() {
+        _uiState.update { state ->
+            state.copy(
+                searchQuery = "",
+                statusFilter = GroupStatusFilter.ALL,
+                filteredGroups = cachedDomainGroups.map { it.toCardUiModel() }
+            )
+        }
+    }
+
+    private fun applyFilters(
+        groups: List<Group>,
+        query: String,
+        statusFilter: GroupStatusFilter
+    ): List<GroupCardUiModel> {
+        return GroupFilterEngine.filter(groups, query, statusFilter).map { it.toCardUiModel() }
     }
 
     fun openCreateGroupSheet() {
@@ -227,11 +280,14 @@ class GroupsViewModel(
                 repository.createGroup(newGroup)
                 repository.listGroups()
             }.onSuccess { groups ->
+                cachedDomainGroups = groups
+                val current = _uiState.value
                 _uiState.update {
                     it.copy(
                         isSavingGroup = false,
                         isCreateSheetVisible = false,
                         groups = groups.map { g -> g.toCardUiModel() },
+                        filteredGroups = applyFilters(groups, current.searchQuery, current.statusFilter),
                         groupCreatedEvent = true
                     )
                 }
