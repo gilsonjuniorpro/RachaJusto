@@ -29,6 +29,7 @@ enum class GroupDetailTab {
 }
 
 enum class GroupDetailFeedback {
+    GROUP_UPDATED,
     EXPENSE_DELETED,
     SETTLEMENT_RECORDED,
     SETTLEMENT_UNDONE,
@@ -53,7 +54,10 @@ data class GroupDetailUiState(
     val editingParticipant: Participant? = null,
     val isAddParticipantDialogOpen: Boolean = false,
     val blockedRemovalParticipantName: String? = null,
-    val activePixTransfer: SuggestedTransfer? = null
+    val activePixTransfer: SuggestedTransfer? = null,
+    val isEditGroupDialogOpen: Boolean = false,
+    val isDeleteGroupDialogOpen: Boolean = false,
+    val groupDeleted: Boolean = false
 ) {
     val filteredExpenses: List<Expense>
         get() {
@@ -248,6 +252,45 @@ class GroupDetailViewModel(
 
     fun dismissBlockedRemovalDialog() {
         _uiState.update { it.copy(blockedRemovalParticipantName = null) }
+    }
+
+    fun openEditGroupDialog() {
+        _uiState.update { it.copy(isEditGroupDialogOpen = true) }
+    }
+
+    fun dismissEditGroupDialog() {
+        _uiState.update { it.copy(isEditGroupDialogOpen = false) }
+    }
+
+    fun updateGroupInfo(name: String, description: String?, emoji: String) {
+        if (name.isBlank()) return
+        _uiState.update { it.copy(isEditGroupDialogOpen = false) }
+        runMutation(GroupDetailFeedback.GROUP_UPDATED) {
+            repository.updateGroupInfo(groupId, name, description, emoji)
+        }
+    }
+
+    fun openDeleteGroupDialog() {
+        _uiState.update { it.copy(isDeleteGroupDialogOpen = true) }
+    }
+
+    fun dismissDeleteGroupDialog() {
+        _uiState.update { it.copy(isDeleteGroupDialogOpen = false) }
+    }
+
+    fun confirmDeleteGroup() {
+        _uiState.update { it.copy(isDeleteGroupDialogOpen = false, isMutating = true) }
+        viewModelScope.launch {
+            runCatching { repository.deleteGroup(groupId) }
+                .onSuccess {
+                    _uiState.update { it.copy(isMutating = false, groupDeleted = true) }
+                }
+                .onFailure {
+                    _uiState.update {
+                        it.copy(isMutating = false, feedback = GroupDetailFeedback.ACTION_FAILED)
+                    }
+                }
+        }
     }
 
     fun consumeFeedback() {
