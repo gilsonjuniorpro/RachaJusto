@@ -193,4 +193,6 @@
     <string name="groups_filter_settled">Saldados</string>
     <string name="groups_search_empty_title">Sin grupos coincidentes</string>
     <string name="groups_search_empty_subtitle">Prueba otro término de búsqueda o limpia el filtro de estado.</string>
+    <string name="groups_overview_total_tracked">Total acumulado</string>
+    <string name="groups_overview_pending_label">Transf. pendientes</string>
 </resources>

@@ -193,4 +193,6 @@
     <string name="groups_filter_settled">Quitados</string>
     <string name="groups_search_empty_title">Nenhum grupo encontrado</string>
     <string name="groups_search_empty_subtitle">Tente outro termo de busca ou limpe o filtro de status.</string>
+    <string name="groups_overview_total_tracked">Total movimentado</string>
+    <string name="groups_overview_pending_label">Transf. pendentes</string>
 </resources>
