@@ -193,4 +193,6 @@
     <string name="groups_filter_settled">Settled</string>
     <string name="groups_search_empty_title">No matching groups</string>
     <string name="groups_search_empty_subtitle">Try a different search term or reset the status filter.</string>
+    <string name="groups_overview_total_tracked">Total tracked</string>
+    <string name="groups_overview_pending_label">Pending transfers</string>
 </resources>
