@@ -12,4 +12,36 @@
     <string name="action_delete">Delete</string>
     <string name="action_close">Close</string>
     <string name="language_title">Language</string>
+
+    <!-- Groups Screen -->
+    <string name="groups_fab_new">New Group</string>
+    <string name="groups_empty_title">No groups yet</string>
+    <string name="groups_empty_subtitle">Create a group for trips, barbecues, or shared apartment bills to start splitting fairly.</string>
+    <string name="groups_card_total_spent">Total spent</string>
+    <string name="groups_card_participants_count">%1$d participants</string>
+    <string name="groups_card_settlement_progress">Settled: %1$d%%</string>
+    <string name="groups_card_settled">Settled</string>
+    <string name="groups_card_no_expenses">No expenses</string>
+    <string name="groups_card_pending_transfers">%1$d transfer(s)</string>
+    <string name="group_created_success">Group created successfully!</string>
+    <string name="error_loading_groups">Could not load groups. Check your connection.</string>
+    <string name="error_creating_group">Could not create the group. Please try again.</string>
+
+    <!-- Create Group Sheet -->
+    <string name="create_group_title">New Group</string>
+    <string name="create_group_emoji_label">Group Icon</string>
+    <string name="create_group_name_label">Group name</string>
+    <string name="create_group_name_placeholder">e.g. Weekend Beach Trip</string>
+    <string name="create_group_description_label">Description (optional)</string>
+    <string name="create_group_description_placeholder">e.g. House rental, food, and fuel</string>
+    <string name="create_group_participants_label">Participants (%1$d)</string>
+    <string name="create_group_add_participant">Add</string>
+    <string name="create_group_participant_number">Participant %1$d</string>
+    <string name="participant_name_label">Name</string>
+    <string name="participant_pix_optional_label">PIX Key (optional)</string>
+    <string name="participant_pix_placeholder">Email, phone, CPF, or random key</string>
+    <string name="create_group_submit">Create Group</string>
+    <string name="error_group_name_required">Enter a group name.</string>
+    <string name="error_min_two_participants">Add at least two participants.</string>
+    <string name="error_participant_name_required">Fill in every participant name.</string>
 </resources>

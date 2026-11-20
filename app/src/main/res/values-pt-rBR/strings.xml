@@ -12,4 +12,36 @@
     <string name="action_delete">Excluir</string>
     <string name="action_close">Fechar</string>
     <string name="language_title">Idioma</string>
+
+    <!-- Groups Screen -->
+    <string name="groups_fab_new">Novo Grupo</string>
+    <string name="groups_empty_title">Nenhum grupo ainda</string>
+    <string name="groups_empty_subtitle">Crie um grupo para viagens, churrascos ou contas de república e divida tudo sem dor de cabeça.</string>
+    <string name="groups_card_total_spent">Total gasto</string>
+    <string name="groups_card_participants_count">%1$d participantes</string>
+    <string name="groups_card_settlement_progress">Quitado: %1$d%%</string>
+    <string name="groups_card_settled">Quitado</string>
+    <string name="groups_card_no_expenses">Sem despesas</string>
+    <string name="groups_card_pending_transfers">%1$d transf.</string>
+    <string name="group_created_success">Grupo criado com sucesso!</string>
+    <string name="error_loading_groups">Não foi possível carregar os grupos. Verifique sua conexão.</string>
+    <string name="error_creating_group">Não foi possível criar o grupo. Tente novamente.</string>
+
+    <!-- Create Group Sheet -->
+    <string name="create_group_title">Novo Grupo</string>
+    <string name="create_group_emoji_label">Ícone do grupo</string>
+    <string name="create_group_name_label">Nome do grupo</string>
+    <string name="create_group_name_placeholder">Ex.: Churrasco de Sábado</string>
+    <string name="create_group_description_label">Descrição (opcional)</string>
+    <string name="create_group_description_placeholder">Ex.: Carnes, bebidas e mercado</string>
+    <string name="create_group_participants_label">Participantes (%1$d)</string>
+    <string name="create_group_add_participant">Adicionar</string>
+    <string name="create_group_participant_number">Participante %1$d</string>
+    <string name="participant_name_label">Nome</string>
+    <string name="participant_pix_optional_label">Chave PIX (opcional)</string>
+    <string name="participant_pix_placeholder">E-mail, celular, CPF ou chave aleatória</string>
+    <string name="create_group_submit">Criar Grupo</string>
+    <string name="error_group_name_required">Informe o nome do grupo.</string>
+    <string name="error_min_two_participants">Adicione pelo menos 2 participantes.</string>
+    <string name="error_participant_name_required">Preencha o nome de todos os participantes.</string>
 </resources>
