@@ -218,4 +218,6 @@
     <string name="pix_type_evp">Aleatoria</string>
     <string name="action_clear">Limpiar</string>
     <string name="add_expense_distribute_equally">Repartir igual</string>
+    <string name="pix_note_optional_label">Nota del pago (opcional)</string>
+    <string name="pix_note_placeholder">Ej.: Pagado desde el banco</string>
 </resources>
