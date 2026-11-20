@@ -129,4 +129,21 @@ class GroupDetailViewModelTest {
         assertEquals(GroupDetailFeedback.SETTLEMENT_UNDONE, vm.uiState.value.feedback)
         assertNull(vm.uiState.value.activePixTransfer)
     }
+
+    @Test
+    fun editAndDeleteGroup_updatesMetadataAndFlagsDeletion() = runTest {
+        val vm = createViewModel("grp_republica_402")
+        advanceUntilIdle()
+
+        vm.updateGroupInfo("República Renovada", "Contas atualizadas", "🏢")
+        advanceUntilIdle()
+
+        assertEquals("República Renovada", vm.uiState.value.group!!.name)
+        assertEquals("🏢", vm.uiState.value.group!!.emoji)
+        assertEquals(GroupDetailFeedback.GROUP_UPDATED, vm.uiState.value.feedback)
+
+        vm.confirmDeleteGroup()
+        advanceUntilIdle()
+        assertTrue(vm.uiState.value.groupDeleted)
+    }
 }
