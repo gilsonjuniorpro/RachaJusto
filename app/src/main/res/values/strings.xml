@@ -185,4 +185,12 @@
     <string name="demo_simulate_error_subtitle">Makes the next request fail to showcase error handling and retry</string>
     <string name="demo_reset_button">Reset Sample Data</string>
     <string name="demo_reset_failed">Reset failed due to simulated error. Tap again to retry.</string>
+
+    <!-- Groups Search & Filter -->
+    <string name="groups_search_placeholder">Search groups or participants…</string>
+    <string name="groups_filter_all">All</string>
+    <string name="groups_filter_pending">Pending</string>
+    <string name="groups_filter_settled">Settled</string>
+    <string name="groups_search_empty_title">No matching groups</string>
+    <string name="groups_search_empty_subtitle">Try a different search term or reset the status filter.</string>
 </resources>

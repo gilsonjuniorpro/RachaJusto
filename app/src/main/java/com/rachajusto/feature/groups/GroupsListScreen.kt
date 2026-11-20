@@ -22,16 +22,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.CheckCircleOutline
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Groups
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.SyncAlt
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -60,6 +65,7 @@ import com.rachajusto.core.designsystem.components.ParticipantAvatar
 import com.rachajusto.core.designsystem.components.ShimmerBox
 import com.rachajusto.core.designsystem.theme.LocalSemanticColors
 import com.rachajusto.core.util.CurrencyFormatter
+import com.rachajusto.domain.engine.GroupStatusFilter
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -194,11 +200,64 @@ fun GroupsListScreen(
                         }
                     }
 
-                    items(uiState.groups, key = { it.id }) { group ->
-                        GroupSummaryCard(
-                            group = group,
-                            onClick = { onGroupClick(group.id) }
-                        )
+                    item(key = "search_and_filter") {
+                        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            OutlinedTextField(
+                                value = uiState.searchQuery,
+                                onValueChange = viewModel::updateSearchQuery,
+                                placeholder = { Text(stringResource(R.string.groups_search_placeholder)) },
+                                leadingIcon = {
+                                    Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
+                                },
+                                trailingIcon = {
+                                    if (uiState.searchQuery.isNotEmpty()) {
+                                        IconButton(onClick = { viewModel.updateSearchQuery("") }) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.Close,
+                                                contentDescription = stringResource(R.string.action_close)
+                                            )
+                                        }
+                                    }
+                                },
+                                singleLine = true,
+                                shape = RoundedCornerShape(16.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                GroupStatusFilter.entries.forEach { filter ->
+                                    val labelRes = when (filter) {
+                                        GroupStatusFilter.ALL -> R.string.groups_filter_all
+                                        GroupStatusFilter.PENDING -> R.string.groups_filter_pending
+                                        GroupStatusFilter.SETTLED -> R.string.groups_filter_settled
+                                    }
+                                    FilterChip(
+                                        selected = uiState.statusFilter == filter,
+                                        onClick = { viewModel.selectStatusFilter(filter) },
+                                        label = { Text(stringResource(labelRes)) }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (uiState.filteredGroups.isEmpty()) {
+                        item(key = "empty_filtered") {
+                            EmptyStateCard(
+                                icon = Icons.Rounded.Search,
+                                title = stringResource(R.string.groups_search_empty_title),
+                                subtitle = stringResource(R.string.groups_search_empty_subtitle),
+                                actionLabel = stringResource(R.string.filter_clear),
+                                onAction = viewModel::clearSearchAndFilter
+                            )
+                        }
+                    } else {
+                        items(uiState.filteredGroups, key = { it.id }) { group ->
+                            GroupSummaryCard(
+                                group = group,
+                                onClick = { onGroupClick(group.id) }
+                            )
+                        }
                     }
                 }
             }
