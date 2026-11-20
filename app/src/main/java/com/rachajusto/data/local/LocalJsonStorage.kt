@@ -1,5 +1,6 @@
 package com.rachajusto.data.local
 
+import com.rachajusto.domain.engine.GroupIntegrityAuditor
 import com.rachajusto.domain.model.Expense
 import com.rachajusto.domain.model.ExpenseCategory
 import com.rachajusto.domain.model.ExpenseLineItem
@@ -126,6 +127,26 @@ class FileJsonGroupStorage(
         if (file.exists()) {
             file.delete()
         }
+    }
+
+    fun exportSnapshotJson(groups: List<Group>): String {
+        return json.encodeToString(
+            StorageSchemaV1.serializer(),
+            StorageSchemaV1(version = 1, groups = groups.map { it.toDto() })
+        )
+    }
+
+    fun importSnapshotJson(rawJson: String): Result<List<Group>> = runCatching {
+        val schema = json.decodeFromString<StorageSchemaV1>(rawJson)
+        val parsed = schema.groups.map { it.toDomain() }
+        for (group in parsed) {
+            val report = GroupIntegrityAuditor.audit(group)
+            require(report.isValid) {
+                "Imported group ${group.id} failed integrity check: ${report.issues}"
+            }
+        }
+        writeGroups(parsed)
+        parsed
     }
 
     private fun ParticipantDto.toDomain() = Participant(
