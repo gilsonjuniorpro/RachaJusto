@@ -59,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -215,6 +216,7 @@ fun GroupDetailScreen(
             if (uiState.group != null && uiState.selectedTab == GroupDetailTab.EXPENSES) {
                 ExtendedFloatingActionButton(
                     onClick = onAddExpenseClick,
+                    modifier = Modifier.testTag("fab_new_expense"),
                     icon = { Icon(imageVector = Icons.Rounded.Add, contentDescription = null) },
                     text = { Text(stringResource(R.string.detail_fab_new_expense)) },
                     containerColor = MaterialTheme.colorScheme.primary,
